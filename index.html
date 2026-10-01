@@ -20,6 +20,7 @@
   .sub { margin: 4px 0 0; font-size: 12px; color: #b9b9b9; max-width: 760px; line-height: 1.45; }
   .chip { border: 1px solid #2a2a2a; border-radius: 4px; padding: 8px 12px; font-size: 13px; color: #f4f4f4; background: #161616; white-space: nowrap; }
   .chip span { color: #b9b9b9; font-size: 11px; display: block; margin-bottom: 2px; }
+  #refresh-count { font-weight: 500; font-variant-numeric: tabular-nums; }
   .filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 24px 0; align-items: center; }
   .filters button { font: inherit; font-size: 13px; border: 1px solid #2a2a2a; background: #161616; color: #b9b9b9; border-radius: 16px; padding: 6px 14px; cursor: pointer; }
   .filters button:hover { background: #222; color: #f4f4f4; }
@@ -79,6 +80,7 @@
       <div class="head-side">
         <img class="trijicon" src="trijicon-logo.svg" alt="Trijicon">
         <div class="chip"><span>Date range</span>Oct 1, 2026 · 10:01am–6:01pm CT</div>
+        <div class="chip" id="refresh-chip"><span>Next refresh</span><b id="refresh-count">5:00</b></div>
       </div>
     </div>
     <div class="filters" id="filters" role="group" aria-label="Platform">
@@ -526,6 +528,27 @@
   var start = new URLSearchParams(location.search).get("p");
   if (start && byId[start]) current = start;
   render();
+})();
+</script>
+
+<script>
+(function () {
+  var left = 5 * 60;
+  var el = document.getElementById("refresh-count");
+  if (!el) return;
+  setInterval(function () {
+    left -= 1;
+    if (left <= 0) {
+      var url = new URL(location.href);
+      url.searchParams.delete("r");
+      url.searchParams.set("r", String(Date.now()));
+      location.replace(url.pathname + url.search);
+      return;
+    }
+    var m = Math.floor(left / 60);
+    var s = left % 60;
+    el.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+  }, 1000);
 })();
 </script>
 </body>
