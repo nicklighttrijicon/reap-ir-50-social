@@ -74,11 +74,11 @@
     <div class="head">
       <div>
         <h1><img class="wordmark" src="reap-ir-50-wordmark.png" alt="REAP-IR-50 social"></h1>
-        <p class="sub">Launch posts only. X, YouTube, and Instagram figures are 4:54pm CT Oct 1, 2026. Facebook reactions, comments, and shares are 5:29pm. Facebook views 5,086 are the 4:54pm public figure because the later page did not show views.</p>
+        <p class="sub">Launch posts only. Figures as of 6:01pm CT Oct 1, 2026. YouTube comments last shown at 4:42pm. Facebook comments and shares last shown at 5:29pm. Instagram views not shown.</p>
       </div>
       <div class="head-side">
         <img class="trijicon" src="trijicon-logo.svg" alt="Trijicon">
-        <div class="chip"><span>Date range</span>Oct 1, 2026 · 10:01am–4:54pm CT</div>
+        <div class="chip"><span>Date range</span>Oct 1, 2026 · 10:01am–6:01pm CT</div>
       </div>
     </div>
     <div class="filters" id="filters" role="group" aria-label="Platform">
@@ -109,14 +109,14 @@
     </div>
     <div class="cloud"><img src="wordcloud.png" alt="Comment word cloud"/></div>
     <footer>
-      A dash is not zero. Checking is paused. Not a live auto-refresh. X followers are 177,624. YouTube has 18.5K subscribers. Instagram has 731K followers. Facebook followers are about 308K. YouTube comments were last shown at 4:42pm. Some X points (4:17, 4:24, 4:42) and some Facebook points are rounded public labels.
+      A dash is not zero. The live page updates when a public number changes. X followers are 177,629. YouTube has 18.5K subscribers. Instagram has 731K followers. Facebook followers are about 308K. YouTube comments were last shown at 4:42pm. Facebook comments and shares last at 5:29pm. Some earlier X and Facebook chart points used rounded public labels.
     </footer>
   </div>
 </div>
 <div class="tip" id="tip" role="tooltip"></div>
 <script>
 (function () {
-  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54"];
+  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01"];
 
   var DATA = [
     {
@@ -124,12 +124,12 @@
       name: "X",
       url: "https://x.com/Trijicon/status/2105674422946308484",
       color: "#D6001C",
-      views: 87879,
-      likes: 627,
-      comments: 40,
-      shares: 44,
-      sharesCell: "33 reposts, 11 quotes",
-      other: "126 bookmarks",
+      views: 95540,
+      likes: 678,
+      comments: 41,
+      shares: 50,
+      sharesCell: "39 reposts, 11 quotes",
+      other: "137 bookmarks",
       audience: 177600,
       audienceLabel: "177.6K",
       series: [
@@ -140,7 +140,8 @@
         { t: "4:36", v: 85899 },
         { t: "4:42", v: 86400, approx: "Shown as 86.4K" },
         { t: "4:50", v: 87560 },
-        { t: "4:54", v: 87879 }
+        { t: "4:54", v: 87879 },
+        { t: "6:01", v: 95540 }
       ]
     },
     {
@@ -148,8 +149,8 @@
       name: "YouTube",
       url: "https://www.youtube.com/watch?v=GL4YznS9ETg",
       color: "#cfcfcf",
-      views: 3583,
-      likes: 250,
+      views: 8851,
+      likes: 326,
       comments: 42,
       commentsWhen: "4:42pm",
       shares: null,
@@ -165,7 +166,8 @@
         { t: "4:36", v: 3138 },
         { t: "4:42", v: 3166 },
         { t: "4:50", v: 3451 },
-        { t: "4:54", v: 3583 }
+        { t: "4:54", v: 3583 },
+        { t: "6:01", v: 8851 }
       ]
     },
     {
@@ -174,8 +176,8 @@
       url: "https://www.instagram.com/trijicon/reel/Dd9Lviggari/",
       color: "#b9b9b9",
       views: null,
-      likes: 1920,
-      comments: 177,
+      likes: 1983,
+      comments: 184,
       shares: null,
       sharesCell: "—",
       other: "731K followers",
@@ -188,8 +190,8 @@
       name: "Facebook",
       url: "https://www.facebook.com/reel/1570702804807840/",
       color: "#e63124",
-      views: 5086,
-      likes: 122,
+      views: 5829,
+      likes: 127,
       comments: 12,
       commentsWhen: "5:29pm",
       shares: 16,
@@ -206,7 +208,8 @@
         { t: "4:36", v: 4900, approx: "Public 0.1K label, not an exact count" },
         { t: "4:42", v: 4900, approx: "Public 0.1K label, not an exact count" },
         { t: "4:50", v: 5000, approx: "Public 0.1K label, not an exact count" },
-        { t: "4:54", v: 5086 }
+        { t: "4:54", v: 5086 },
+        { t: "6:01", v: 5829 }
       ]
     }
   ];
@@ -243,23 +246,23 @@
   function metricCards(rows) {
     if (rows.length === 4) {
       return [
-        score("Views", "96,548", "X, YouTube, and Facebook", "Instagram views not shown"),
-        score("Likes and reactions", "2,919", "", "X 627 · YouTube 250 · Instagram 1,920 · Facebook 122"),
-        score("Comments", "271", "", "X 40 and Instagram 177 at 4:54pm. Facebook 12 at 5:29pm. YouTube 42 last at 4:42pm."),
-        score("Shares", "60", "", "X 33 reposts and 11 quotes. Facebook 16 shares at 5:29pm. YouTube and Instagram not shown.")
+        score("Views", "110,220", "X, YouTube, and Facebook", "Instagram views not shown"),
+        score("Likes and reactions", "3,114", "", "X 678 · YouTube 326 · Instagram 1,983 · Facebook 127"),
+        score("Comments", "279", "", "X 41 and Instagram 184 at 6:01pm. Facebook 12 at 5:29pm. YouTube 42 last at 4:42pm."),
+        score("Shares", "66", "", "X 39 reposts and 11 quotes. Facebook 16 shares at 5:29pm. YouTube and Instagram not shown.")
       ].join("");
     }
     var p = rows[0];
     var viewsNote = p.views == null
       ? p.name + " views not shown"
-      : (p.id === "facebook" ? "4:54pm public figure. The 5:29pm page did not show views." : "4:54pm CT");
+      : (p.id === "facebook" ? "6:01pm CT public figure" : "6:01pm CT");
     var commentsNote = p.comments == null
       ? p.name + " comments not shown"
-      : (p.id === "youtube" ? "Last shown at 4:42pm, not reconfirmed at 4:54." : (p.commentsWhen ? p.commentsWhen + " CT" : "4:54pm CT"));
+      : (p.id === "youtube" ? "Last shown at 4:42pm, not reconfirmed at 6:01." : (p.commentsWhen ? p.commentsWhen + " CT" : "6:01pm CT"));
     var sharesNote = p.shares == null
       ? p.name + " shares not shown"
-      : (p.id === "x" ? "33 reposts and 11 quotes" : (p.sharesWhen ? p.sharesWhen + " CT" : ""));
-    var likesNote = p.id === "facebook" ? "Reactions at 5:29pm CT" : "4:54pm CT";
+      : (p.id === "x" ? "39 reposts and 11 quotes" : (p.sharesWhen ? p.sharesWhen + " CT" : ""));
+    var likesNote = p.id === "facebook" ? "Reactions at 6:01pm CT" : "6:01pm CT";
     return [
       score("Views", p.views == null ? "—" : fmt(p.views), "", viewsNote),
       score("Likes and reactions", p.likes == null ? "—" : fmt(p.likes), "", likesNote),
@@ -324,7 +327,7 @@
     if (current === "all") {
       cards.push(
         '<div class="card"><h2>X views</h2><p class="hint">Afternoon of launch day. 4:17, 4:24, and 4:42 were shown as 83.3K, 84.1K, and 86.4K.</p>' +
-        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 90000, [78000, 82000, 86000, 90000]) +
+        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 100000, [78000, 84000, 90000, 96000, 100000]) +
         '</div>'
       );
       cards.push(
@@ -333,7 +336,7 @@
         lineSvg([
           { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
           { name: "Facebook", color: "#e63124", points: byId.facebook.series }
-        ], 0, 6000, [0, 2000, 4000, 6000]) +
+        ], 0, 10000, [0, 2500, 5000, 7500, 10000]) +
         '</div>'
       );
       return { html: cards.join(""), single: false };
@@ -342,7 +345,7 @@
     if (showX) {
       cards.push(
         '<div class="card"><h2><a href="' + byId.x.url + '" target="_blank" rel="noopener">X</a> views</h2><p class="hint">Afternoon of launch day. 4:17, 4:24, and 4:42 were shown as 83.3K, 84.1K, and 86.4K.</p>' +
-        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 90000, [78000, 82000, 86000, 90000]) +
+        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 100000, [78000, 84000, 90000, 96000, 100000]) +
         '</div>'
       );
     }
@@ -352,18 +355,18 @@
         lineSvg([
           { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
           { name: "Facebook", color: "#e63124", points: byId.facebook.series }
-        ], 0, 6000, [0, 2000, 4000, 6000]) + '</div>'
+        ], 0, 10000, [0, 2500, 5000, 7500, 10000]) + '</div>'
       );
     } else if (showY) {
       cards.push(
         '<div class="card"><h2><a href="' + byId.youtube.url + '" target="_blank" rel="noopener">YouTube</a> views</h2><p class="hint">Afternoon of launch day. These points are the public view counts.</p>' +
-        lineSvg([{ name: "YouTube", color: "#cfcfcf", points: byId.youtube.series }], 0, 4000, [0, 1000, 2000, 3000, 4000]) +
+        lineSvg([{ name: "YouTube", color: "#cfcfcf", points: byId.youtube.series }], 0, 10000, [0, 2500, 5000, 7500, 10000]) +
         '</div>'
       );
     } else if (showF) {
       cards.push(
-        '<div class="card"><h2><a href="' + byId.facebook.url + '" target="_blank" rel="noopener">Facebook</a> views</h2><p class="hint">Blank at 3:55pm, then 4.6K. Middle points are the public 0.1K labels. 4,633 and 5,086 are the figures read, not 0.1K labels.</p>' +
-        lineSvg([{ name: "Facebook", color: "#e63124", points: byId.facebook.series }], 4400, 5200, [4400, 4600, 4800, 5000, 5200]) +
+        '<div class="card"><h2><a href="' + byId.facebook.url + '" target="_blank" rel="noopener">Facebook</a> views</h2><p class="hint">Blank at 3:55pm, then 4.6K. Middle points are the public 0.1K labels. 4,633, 5,086, and 5,829 are the figures read, not 0.1K labels.</p>' +
+        lineSvg([{ name: "Facebook", color: "#e63124", points: byId.facebook.series }], 4400, 6000, [4400, 4800, 5200, 5600, 6000]) +
         '</div>'
       );
     }
