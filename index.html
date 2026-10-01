@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>REAP-IR-50 social</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #0d0d0d; color: #f4f4f4; font-family: "Noto Sans", Roboto, Arial, sans-serif; }
+  a { color: #D6001C; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .page { max-width: 1180px; margin: 0 auto; padding: 20px 16px 28px; }
+  .report { background: #161616; border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; }
+  .accent { height: 4px; background: #D6001C; }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 18px 24px 8px; }
+  h1 { font-size: 22px; font-weight: 400; margin: 0; letter-spacing: 0; color: #f4f4f4; }
+  .sub { margin: 4px 0 0; font-size: 12px; color: #b9b9b9; max-width: 760px; line-height: 1.45; }
+  .chip { border: 1px solid #2a2a2a; border-radius: 4px; padding: 8px 12px; font-size: 13px; color: #f4f4f4; background: #161616; white-space: nowrap; }
+  .chip span { color: #b9b9b9; font-size: 11px; display: block; margin-bottom: 2px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 24px 0; align-items: center; }
+  .filters button { font: inherit; font-size: 13px; border: 1px solid #2a2a2a; background: #161616; color: #b9b9b9; border-radius: 16px; padding: 6px 14px; cursor: pointer; }
+  .filters button:hover { background: #222; color: #f4f4f4; }
+  .filters button.on { background: #D6001C; border-color: #D6001C; color: #f4f4f4; font-weight: 500; }
+  .filter-note { font-size: 11px; color: #b9b9b9; margin-left: 4px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 12px 24px 4px; }
+  .score { border: 1px solid #2a2a2a; border-radius: 4px; padding: 12px 16px 14px; background: #161616; min-height: 108px; }
+  .score .k { font-size: 12px; color: #b9b9b9; }
+  .score .v { font-size: 28px; font-weight: 400; margin-top: 2px; line-height: 1.2; color: #f4f4f4; }
+  .score .d { font-size: 12px; margin-top: 6px; color: #b9b9b9; }
+  .score .n { font-size: 12px; margin-top: 6px; color: #b9b9b9; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 24px 0; }
+  .row.single { grid-template-columns: 1fr; }
+  .card { border: 1px solid #2a2a2a; border-radius: 4px; padding: 12px 14px 8px; background: #161616; }
+  .card h2 { font-size: 14px; font-weight: 500; margin: 0 0 2px; color: #f4f4f4; }
+  .card .hint { font-size: 11px; color: #b9b9b9; margin: 0 0 6px; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: #b9b9b9; margin: 2px 0 4px; flex-wrap: wrap; }
+  .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .chart-wrap { position: relative; }
+  svg.chart { width: 100%; height: auto; display: block; }
+  svg.chart text { font-family: "Noto Sans", Roboto, Arial, sans-serif; }
+  table { width: calc(100% - 48px); margin: 0 24px; border-collapse: collapse; font-size: 13px; }
+  th { text-align: right; font-weight: 500; font-size: 12px; color: #b9b9b9; background: #161616; padding: 8px 10px; border-bottom: 1px solid #2a2a2a; }
+  th:first-child, td:first-child { text-align: left; }
+  td { padding: 10px; border-bottom: 1px solid #2a2a2a; text-align: right; color: #f4f4f4; }
+  td.plat { text-align: left; font-weight: 500; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover td { background: #222; }
+  td .when { color: #b9b9b9; }
+  .section { padding: 16px 24px 0; }
+  .section h2 { font-size: 14px; font-weight: 500; margin: 0; color: #f4f4f4; }
+  .cloud { margin: 8px 24px 0; border: 1px solid #2a2a2a; border-radius: 4px; padding: 8px; background: #161616; }
+  .cloud img { width: 100%; height: auto; display: block; background: #161616; }
+  .legend2 { display: flex; gap: 16px; font-size: 12px; color: #b9b9b9; padding: 8px 24px 0; flex-wrap: wrap; }
+  .saying-hint { margin: 2px 24px 0; font-size: 11px; color: #b9b9b9; }
+  footer { padding: 14px 24px 18px; font-size: 11px; color: #b9b9b9; line-height: 1.45; }
+  .tip { position: fixed; z-index: 20; display: none; background: #161616; border: 1px solid #2a2a2a; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,.45); padding: 8px 10px; font-size: 12px; color: #f4f4f4; pointer-events: none; max-width: 240px; line-height: 1.35; }
+  .tip .who { font-weight: 500; }
+  .tip .muted { color: #b9b9b9; display: block; margin-top: 2px; }
+  .empty { font-size: 13px; color: #b9b9b9; padding: 28px 8px 36px; }
+  @media (max-width: 900px) {
+    .kpis, .row { grid-template-columns: 1fr; }
+    .head { flex-direction: column; }
+    table { width: calc(100% - 24px); margin: 0 12px; display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="report">
+    <div class="accent"></div>
+    <div class="head">
+      <div>
+        <h1>REAP-IR-50 social</h1>
+        <p class="sub">Launch posts only. X, YouTube, and Instagram figures are 4:54pm CT Oct 1, 2026. Facebook reactions, comments, and shares are 5:29pm. Facebook views 5,086 are the 4:54pm public figure because the later page did not show views.</p>
+      </div>
+      <div class="chip"><span>Date range</span>Oct 1, 2026 · 10:01am–4:54pm CT</div>
+    </div>
+    <div class="filters" id="filters" role="group" aria-label="Platform">
+      <button type="button" data-id="all" class="on">All</button>
+      <button type="button" data-id="x">X</button>
+      <button type="button" data-id="youtube">YouTube</button>
+      <button type="button" data-id="instagram">Instagram</button>
+      <button type="button" data-id="facebook">Facebook</button>
+      <span class="filter-note" id="filter-note"></span>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="row" id="lines"></div>
+    <div class="section"><h2>Views by platform</h2></div>
+    <div class="row" id="bars"></div>
+    <div class="section"><h2>Launch posts</h2></div>
+    <table>
+      <thead>
+        <tr><th>Platform</th><th>Views</th><th>Likes / reactions</th><th>Comments</th><th>Shares</th><th>Other</th></tr>
+      </thead>
+      <tbody id="posts"></tbody>
+    </table>
+    <div class="section" style="padding-top:18px"><h2>What people are saying</h2></div>
+    <p class="saying-hint">Words from comments with text on X, YouTube, Instagram, and the Facebook comments read so far. A word is counted once per comment. Red is a complaint in context, light is praise or intent to buy, gray is just the topic. Usernames and filler contractions are left out. This cloud is not split by the platform filter.</p>
+    <div class="legend2">
+      <span><i class="sw" style="background:#D6001C"></i>Complaint in context</span>
+      <span><i class="sw" style="background:#f4f4f4"></i>Praise or want</span>
+      <span><i class="sw" style="background:#b9b9b9"></i>Topic</span>
+    </div>
+    <div class="cloud"><img src="wordcloud.png" alt="Comment word cloud"/></div>
+    <footer>
+      A dash is not zero. Checking is paused. Not a live auto-refresh. X followers are 177,624. YouTube has 18.5K subscribers. Instagram has 731K followers. Facebook followers are about 308K. YouTube comments were last shown at 4:42pm. Some X points (4:17, 4:24, 4:42) and some Facebook points are rounded public labels.
+    </footer>
+  </div>
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script>
+(function () {
+  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54"];
+
+  var DATA = [
+    {
+      id: "x",
+      name: "X",
+      url: "https://x.com/Trijicon/status/2105674422946308484",
+      color: "#D6001C",
+      views: 87879,
+      likes: 627,
+      comments: 40,
+      shares: 44,
+      sharesCell: "33 reposts, 11 quotes",
+      other: "126 bookmarks",
+      audience: 177600,
+      audienceLabel: "177.6K",
+      series: [
+        { t: "3:55", v: 81053 },
+        { t: "4:17", v: 83300, approx: "Shown as 83.3K" },
+        { t: "4:24", v: 84100, approx: "Shown as 84.1K" },
+        { t: "4:34", v: 85454 },
+        { t: "4:36", v: 85899 },
+        { t: "4:42", v: 86400, approx: "Shown as 86.4K" },
+        { t: "4:50", v: 87560 },
+        { t: "4:54", v: 87879 }
+      ]
+    },
+    {
+      id: "youtube",
+      name: "YouTube",
+      url: "https://www.youtube.com/watch?v=GL4YznS9ETg",
+      color: "#cfcfcf",
+      views: 3583,
+      likes: 250,
+      comments: 42,
+      commentsWhen: "4:42pm",
+      shares: null,
+      sharesCell: "—",
+      other: "18.5K subscribers",
+      audience: 18500,
+      audienceLabel: "18.5K",
+      series: [
+        { t: "3:55", v: 1846 },
+        { t: "4:17", v: 2530 },
+        { t: "4:24", v: 2576 },
+        { t: "4:34", v: 2985 },
+        { t: "4:36", v: 3138 },
+        { t: "4:42", v: 3166 },
+        { t: "4:50", v: 3451 },
+        { t: "4:54", v: 3583 }
+      ]
+    },
+    {
+      id: "instagram",
+      name: "Instagram",
+      url: "https://www.instagram.com/trijicon/reel/Dd9Lviggari/",
+      color: "#b9b9b9",
+      views: null,
+      likes: 1920,
+      comments: 177,
+      shares: null,
+      sharesCell: "—",
+      other: "731K followers",
+      audience: 731000,
+      audienceLabel: "731K",
+      series: null
+    },
+    {
+      id: "facebook",
+      name: "Facebook",
+      url: "https://www.facebook.com/reel/1570702804807840/",
+      color: "#e63124",
+      views: 5086,
+      likes: 122,
+      comments: 12,
+      commentsWhen: "5:29pm",
+      shares: 16,
+      sharesWhen: "5:29pm",
+      sharesCell: "16",
+      other: "about 308K followers",
+      audience: 308000,
+      audienceLabel: "308K",
+      series: [
+        { t: "3:55", v: null },
+        { t: "4:17", v: 4633 },
+        { t: "4:24", v: 4700, approx: "Public 0.1K label, not an exact count" },
+        { t: "4:34", v: 4800, approx: "Public 0.1K label, not an exact count" },
+        { t: "4:36", v: 4900, approx: "Public 0.1K label, not an exact count" },
+        { t: "4:42", v: 4900, approx: "Public 0.1K label, not an exact count" },
+        { t: "4:50", v: 5000, approx: "Public 0.1K label, not an exact count" },
+        { t: "4:54", v: 5086 }
+      ]
+    }
+  ];
+
+  var byId = {};
+  DATA.forEach(function (p) { byId[p.id] = p; });
+
+  var current = "all";
+  var tip = document.getElementById("tip");
+
+  function fmt(n) {
+    return n.toLocaleString("en-US");
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function selected() {
+    if (current === "all") return DATA.slice();
+    return [byId[current]];
+  }
+
+  function score(label, value, detail, note) {
+    return '<div class="score"><div class="k">' + esc(label) + '</div><div class="v">' + esc(value) + '</div>' +
+      (detail ? '<div class="d">' + esc(detail) + '</div>' : '') +
+      (note ? '<div class="n">' + esc(note) + '</div>' : '') + '</div>';
+  }
+
+  function metricCards(rows) {
+    if (rows.length === 4) {
+      return [
+        score("Views", "96,548", "X, YouTube, and Facebook", "Instagram views not shown"),
+        score("Likes and reactions", "2,919", "", "X 627 · YouTube 250 · Instagram 1,920 · Facebook 122"),
+        score("Comments", "271", "", "X 40 and Instagram 177 at 4:54pm. Facebook 12 at 5:29pm. YouTube 42 last at 4:42pm."),
+        score("Shares", "60", "", "X 33 reposts and 11 quotes. Facebook 16 shares at 5:29pm. YouTube and Instagram not shown.")
+      ].join("");
+    }
+    var p = rows[0];
+    var viewsNote = p.views == null
+      ? p.name + " views not shown"
+      : (p.id === "facebook" ? "4:54pm public figure. The 5:29pm page did not show views." : "4:54pm CT");
+    var commentsNote = p.comments == null
+      ? p.name + " comments not shown"
+      : (p.id === "youtube" ? "Last shown at 4:42pm, not reconfirmed at 4:54." : (p.commentsWhen ? p.commentsWhen + " CT" : "4:54pm CT"));
+    var sharesNote = p.shares == null
+      ? p.name + " shares not shown"
+      : (p.id === "x" ? "33 reposts and 11 quotes" : (p.sharesWhen ? p.sharesWhen + " CT" : ""));
+    var likesNote = p.id === "facebook" ? "Reactions at 5:29pm CT" : "4:54pm CT";
+    return [
+      score("Views", p.views == null ? "—" : fmt(p.views), "", viewsNote),
+      score("Likes and reactions", p.likes == null ? "—" : fmt(p.likes), "", likesNote),
+      score("Comments", p.comments == null ? "—" : fmt(p.comments), "", commentsNote),
+      score("Shares", p.shares == null ? "—" : fmt(p.shares), "", sharesNote)
+    ].join("");
+  }
+
+  function xAt(i) {
+    return 52 + i * (508 - 52) / 7;
+  }
+
+  function yAt(v, min, max) {
+    var top = 16, bot = 212;
+    return bot - ((v - min) / (max - min)) * (bot - top);
+  }
+
+  function axisLabel(v) {
+    if (v >= 1000 && v % 1000 === 0 && v >= 10000) return (v / 1000) + "K";
+    return fmt(v);
+  }
+
+  function lineSvg(series, min, max, ticks) {
+    var grid = "";
+    ticks.forEach(function (tick) {
+      var y = yAt(tick, min, max);
+      grid += '<line x1="52" y1="' + y.toFixed(1) + '" x2="508" y2="' + y.toFixed(1) + '" stroke="#2a2a2a" stroke-width="1"/>';
+      grid += '<text x="44" y="' + (y + 4).toFixed(1) + '" text-anchor="end" font-size="11" fill="#b9b9b9">' + esc(axisLabel(tick)) + '</text>';
+    });
+    var labels = "";
+    TIMES.forEach(function (t, i) {
+      if (i % 2 === 0 || i === TIMES.length - 1) {
+        labels += '<text x="' + xAt(i).toFixed(1) + '" y="232" text-anchor="middle" font-size="11" fill="#b9b9b9">' + t + '</text>';
+      }
+    });
+    var paths = "";
+    series.forEach(function (s) {
+      var d = "";
+      var dots = "";
+      s.points.forEach(function (pt) {
+        if (pt.v == null) return;
+        var i = TIMES.indexOf(pt.t);
+        var x = xAt(i);
+        var y = yAt(pt.v, min, max);
+        d += (d ? " L " : "M ") + x.toFixed(1) + "," + y.toFixed(1);
+        var tipText = s.name + "\n" + pt.t + "pm CT\n" + fmt(pt.v) + (pt.approx ? "\n" + pt.approx : "");
+        dots += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="3" fill="#161616" stroke="' + s.color + '" stroke-width="2"/>';
+        dots += '<circle class="hit" data-tip="' + esc(tipText).replace(/\n/g, "&#10;") + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="10" fill="transparent" stroke="transparent"/>';
+      });
+      paths += '<path d="' + d + '" fill="none" stroke="' + s.color + '" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' + dots;
+    });
+    return '<svg class="chart" viewBox="0 0 520 240" role="img">' + grid + labels + paths + '</svg>';
+  }
+
+  function lineCards(rows) {
+    var cards = [];
+    var showX = rows.some(function (p) { return p.id === "x"; });
+    var showY = rows.some(function (p) { return p.id === "youtube"; });
+    var showF = rows.some(function (p) { return p.id === "facebook"; });
+    var showI = rows.some(function (p) { return p.id === "instagram"; });
+
+    if (current === "all") {
+      cards.push(
+        '<div class="card"><h2>X views</h2><p class="hint">Afternoon of launch day. 4:17, 4:24, and 4:42 were shown as 83.3K, 84.1K, and 86.4K.</p>' +
+        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 90000, [78000, 82000, 86000, 90000]) +
+        '</div>'
+      );
+      cards.push(
+        '<div class="card"><h2>YouTube and Facebook views</h2><p class="hint">Facebook was blank at 3:55pm, then 4.6K. Middle Facebook points are the public 0.1K labels.</p>' +
+        '<div class="legend"><span><i class="sw" style="background:#cfcfcf"></i>YouTube</span><span><i class="sw" style="background:#e63124"></i>Facebook</span></div>' +
+        lineSvg([
+          { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
+          { name: "Facebook", color: "#e63124", points: byId.facebook.series }
+        ], 0, 6000, [0, 2000, 4000, 6000]) +
+        '</div>'
+      );
+      return { html: cards.join(""), single: false };
+    }
+
+    if (showX) {
+      cards.push(
+        '<div class="card"><h2><a href="' + byId.x.url + '" target="_blank" rel="noopener">X</a> views</h2><p class="hint">Afternoon of launch day. 4:17, 4:24, and 4:42 were shown as 83.3K, 84.1K, and 86.4K.</p>' +
+        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 90000, [78000, 82000, 86000, 90000]) +
+        '</div>'
+      );
+    }
+    if (showY && showF) {
+      cards.push(
+        '<div class="card"><h2>YouTube and Facebook views</h2><p class="hint">Facebook was blank at 3:55pm, then 4.6K. Middle Facebook points are the public 0.1K labels.</p>' +
+        lineSvg([
+          { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
+          { name: "Facebook", color: "#e63124", points: byId.facebook.series }
+        ], 0, 6000, [0, 2000, 4000, 6000]) + '</div>'
+      );
+    } else if (showY) {
+      cards.push(
+        '<div class="card"><h2><a href="' + byId.youtube.url + '" target="_blank" rel="noopener">YouTube</a> views</h2><p class="hint">Afternoon of launch day. These points are the public view counts.</p>' +
+        lineSvg([{ name: "YouTube", color: "#cfcfcf", points: byId.youtube.series }], 0, 4000, [0, 1000, 2000, 3000, 4000]) +
+        '</div>'
+      );
+    } else if (showF) {
+      cards.push(
+        '<div class="card"><h2><a href="' + byId.facebook.url + '" target="_blank" rel="noopener">Facebook</a> views</h2><p class="hint">Blank at 3:55pm, then 4.6K. Middle points are the public 0.1K labels. 4,633 and 5,086 are the figures read, not 0.1K labels.</p>' +
+        lineSvg([{ name: "Facebook", color: "#e63124", points: byId.facebook.series }], 4400, 5200, [4400, 4600, 4800, 5000, 5200]) +
+        '</div>'
+      );
+    }
+    if (showI && !showX && !showY && !showF) {
+      cards.push(
+        '<div class="card"><h2><a href="' + byId.instagram.url + '" target="_blank" rel="noopener">Instagram</a> views</h2><p class="hint">No afternoon view series.</p><div class="empty">Instagram views were not shown, so there is no line to plot. A dash is not zero.</div></div>'
+      );
+    }
+    return { html: cards.join(""), single: cards.length < 2 };
+  }
+
+  function barSvg(items, missingLine) {
+    var known = items.filter(function (it) { return it.value != null; });
+    var max = 0;
+    known.forEach(function (it) { if (it.value > max) max = it.value; });
+    if (!max) max = 1;
+    var rowH = 48;
+    var h = 16 + items.length * rowH + (missingLine ? 28 : 12);
+    var body = "";
+    items.forEach(function (it, idx) {
+      var y = 18 + idx * rowH;
+      var label = '<a href="' + it.url + '" target="_blank" rel="noopener"><text x="86" y="' + (y + 16) + '" text-anchor="end" font-size="12" fill="#D6001C">' + esc(it.name) + '</text></a>';
+      if (it.value == null) {
+        body += label + '<text x="96" y="' + (y + 16) + '" font-size="12" fill="#b9b9b9">—</text>';
+      } else {
+        var w = Math.max(2, (it.value / max) * 340);
+        body += label +
+          '<rect x="96" y="' + y + '" width="' + w.toFixed(1) + '" height="22" rx="2" fill="' + it.color + '"/>' +
+          '<text x="' + (96 + w + 8).toFixed(1) + '" y="' + (y + 16) + '" font-size="12" fill="#f4f4f4">' + esc(it.label) + '</text>';
+      }
+    });
+    if (missingLine) {
+      body += '<text x="96" y="' + (18 + items.length * rowH + 8) + '" font-size="12" fill="#b9b9b9">' + esc(missingLine) + '</text>';
+    }
+    return '<svg class="chart" viewBox="0 0 520 ' + h + '" role="img">' + body + '</svg>';
+  }
+
+  function barCards(rows) {
+    var viewItems = [];
+    var missingViews = [];
+    rows.forEach(function (p) {
+      if (p.views == null) missingViews.push(p.name);
+      else viewItems.push({ name: p.name, url: p.url, value: p.views, label: fmt(p.views), color: p.color });
+    });
+    viewItems.sort(function (a, b) { return b.value - a.value; });
+    var viewHint = current === "all" ? "Latest public figure for each post." : "Latest public figure for this post.";
+    var missingLine = null;
+    if (current === "all") missingLine = "Instagram views were not shown";
+    else if (missingViews.length && !viewItems.length) {
+      /* handled as items with dashes if we include them; All keeps IG as a caption, single IG has no bar */
+    }
+    var viewBody;
+    if (!viewItems.length) {
+      viewBody = '<div class="empty">' + esc(missingViews.join(", ")) + ' views were not shown.</div>';
+    } else {
+      viewBody = barSvg(viewItems, missingLine);
+    }
+    var aud = rows.map(function (p) {
+      return { name: p.name, url: p.url, value: p.audience, label: p.audienceLabel, color: p.color };
+    }).sort(function (a, b) { return b.value - a.value; });
+    return '<div class="card"><h2>Launch post views</h2><p class="hint">' + esc(viewHint) + '</p>' + viewBody + '</div>' +
+      '<div class="card"><h2>Audience</h2><p class="hint">Account size, not reach of this post.</p>' + barSvg(aud, null) + '</div>';
+  }
+
+  function whenSpan(w) {
+    return w ? ' <span class="when">' + esc(w) + '</span>' : '';
+  }
+
+  function cellNum(n) {
+    return n == null ? "—" : fmt(n);
+  }
+
+  function tableRows(rows) {
+    return rows.map(function (p) {
+      var shares = p.id === "facebook"
+        ? "16" + whenSpan("5:29pm")
+        : esc(p.sharesCell);
+      var comments = cellNum(p.comments) + whenSpan(p.commentsWhen);
+      return '<tr data-url="' + esc(p.url) + '">' +
+        '<td class="plat"><a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.name) + '</a></td>' +
+        '<td>' + cellNum(p.views) + '</td>' +
+        '<td>' + cellNum(p.likes) + '</td>' +
+        '<td>' + comments + '</td>' +
+        '<td>' + shares + '</td>' +
+        '<td>' + esc(p.other) + '</td></tr>';
+    }).join("");
+  }
+
+  function bindTips(root) {
+    root.querySelectorAll(".hit").forEach(function (node) {
+      node.addEventListener("mouseenter", function (ev) { showTip(node.getAttribute("data-tip"), ev); });
+      node.addEventListener("mousemove", moveTip);
+      node.addEventListener("mouseleave", hideTip);
+    });
+  }
+
+  function showTip(text, ev) {
+    var lines = text.split("\n");
+    tip.innerHTML = '<div class="who">' + esc(lines[0]) + '</div>' +
+      '<div>' + esc(lines[1]) + '</div>' +
+      '<div>' + esc(lines[2]) + '</div>' +
+      (lines[3] ? '<span class="muted">' + esc(lines[3]) + '</span>' : '');
+    tip.style.display = "block";
+    moveTip(ev);
+  }
+
+  function moveTip(ev) {
+    var x = ev.clientX + 14;
+    var y = ev.clientY + 16;
+    tip.style.left = x + "px";
+    tip.style.top = y + "px";
+    var r = tip.getBoundingClientRect();
+    if (r.right > window.innerWidth - 8) tip.style.left = (ev.clientX - r.width - 12) + "px";
+    if (r.bottom > window.innerHeight - 8) tip.style.top = (ev.clientY - r.height - 12) + "px";
+  }
+
+  function hideTip() { tip.style.display = "none"; }
+
+  function render() {
+    var rows = selected();
+    document.getElementById("kpis").innerHTML = metricCards(rows);
+    var lines = lineCards(rows);
+    var lineEl = document.getElementById("lines");
+    lineEl.className = "row" + (lines.single ? " single" : "");
+    lineEl.innerHTML = lines.html;
+    document.getElementById("bars").innerHTML = barCards(rows);
+    document.getElementById("posts").innerHTML = tableRows(rows);
+    document.getElementById("filter-note").textContent = current === "all"
+      ? "All platforms with a known number. A dash is not zero."
+      : byId[current].name + " only. Unknown metrics stay a dash.";
+    document.querySelectorAll("#filters button").forEach(function (b) {
+      var on = b.getAttribute("data-id") === current;
+      b.className = on ? "on" : "";
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    bindTips(lineEl);
+    document.querySelectorAll("#posts tr").forEach(function (tr) {
+      tr.addEventListener("click", function (ev) {
+        if (ev.target.closest("a")) return;
+        window.open(tr.getAttribute("data-url"), "_blank", "noopener");
+      });
+    });
+  }
+
+  document.getElementById("filters").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button");
+    if (!b) return;
+    current = b.getAttribute("data-id");
+    var url = new URL(location.href);
+    if (current === "all") url.searchParams.delete("p");
+    else url.searchParams.set("p", current);
+    try { history.replaceState(null, "", url.pathname + url.search); } catch (e) {}
+    render();
+  });
+
+  var start = new URLSearchParams(location.search).get("p");
+  if (start && byId[start]) current = start;
+  render();
+})();
+</script>
+</body>
+</html>
