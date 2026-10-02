@@ -172,7 +172,7 @@
     <div class="row" id="lines"></div>
     <div class="section"><h2>Views by platform</h2></div>
     <div class="row" id="bars"></div>
-    <div class="section"><h2>Launch posts</h2></div>
+    <div class="section"><h2>Campaign posts</h2></div>
     <table>
       <thead>
         <tr><th>Platform</th><th>Views</th><th>Likes / reactions</th><th>Comments</th><th>Shares</th><th>Other</th></tr>
@@ -654,12 +654,17 @@
       name: "X",
       url: "https://x.com/Trijicon/status/2105674422946308484",
       color: "#D6001C",
-      views: 148816,
-      likes: 1073,
-      comments: 55,
+      views: 149869,
+      likes: 1103,
+      comments: 56,
       shares: 105,
       sharesCell: "82 reposts, 23 quotes",
-      other: "246 bookmarks",
+      other: "247 bookmarks",
+      links: [
+        { href: "https://x.com/Trijicon/status/2105674422946308484", label: "Video" },
+        { href: "https://x.com/Trijicon/status/2106098710484586600", label: "Carousel" }
+      ],
+      coverage: "Video and Oct 2 carousel",
       audience: 177709,
       audienceLabel: "177.7K",
       series: [
@@ -819,7 +824,7 @@
         { t: "3:09", v: 148680, approx: "fxtwitter views 148,680; syndication lacks view count" },
         { t: "3:17", v: 148728, approx: "fxtwitter views 148,728; syndication lacks view count" },
         { t: "3:31", v: 148786, approx: "fxtwitter views 148,786; syndication lacks view count" },
-        { t: "3:37", v: 148816, approx: "fxtwitter views 148,816; syndication lacks view count" }
+        { t: "3:37", v: 149869, approx: "Video 148,816 plus Oct 2 carousel 1,053. Video from fxtwitter; syndication lacks view count" }
       ]
     },
     {
@@ -1001,12 +1006,17 @@
       url: "https://www.instagram.com/trijicon/reel/Dd9Lviggari/",
       color: "#b9b9b9",
       views: 50800,
-      likes: 2469,
-      comments: 214,
+      likes: 2701,
+      comments: 224,
       shares: 42,
       sharesWhen: "10:51am",
       sharesCell: "42 reposts",
       other: "731K followers",
+      links: [
+        { href: "https://www.instagram.com/trijicon/reel/Dd9Lviggari/", label: "Reel" },
+        { href: "https://www.instagram.com/trijicon/p/DeAM6V4DFCO/", label: "Carousel" }
+      ],
+      coverage: "Reel and Oct 2 carousel",
       audience: 731000,
       audienceLabel: "731K",
       series: [
@@ -1198,33 +1208,6 @@
   ];
 
 
-  var EXTRA_POSTS = [
-    {
-      id: "instagram-carousel",
-      name: "Instagram",
-      url: "https://www.instagram.com/trijicon/p/DeAM6V4DFCO/",
-      views: null,
-      likes: 232,
-      comments: 10,
-      shares: null,
-      sharesCell: "—",
-      other: "Oct 2 REAP-IR-50 carousel (3 images)",
-      platform: "instagram"
-    },
-    {
-      id: "x-carousel",
-      name: "X",
-      url: "https://x.com/Trijicon/status/2106098710484586600",
-      views: 1053,
-      likes: 30,
-      comments: 1,
-      shares: 0,
-      sharesCell: "0 reposts, 0 quotes",
-      other: "Oct 2 REAP-IR-50 carousel (3 images); 1 bookmark",
-      platform: "x"
-    }
-  ];
-
   var byId = {};
   DATA.forEach(function (p) { byId[p.id] = p; });
 
@@ -1391,13 +1374,27 @@
       (note ? '<div class="n">' + esc(note) + '</div>' : '') + '</div>';
   }
 
+  function sumKnown(rows, key) {
+    var n = 0, any = false;
+    rows.forEach(function (row) {
+      if (typeof row[key] === "number") { n += row[key]; any = true; }
+    });
+    return any ? n : null;
+  }
+
+  function channelBreakdown(key) {
+    return DATA.map(function (row) {
+      return row.name + " " + (row[key] == null ? "not shown" : fmt(row[key]));
+    }).join(" · ");
+  }
+
   function metricCards(rows) {
     if (rows.length === 4) {
       return [
-        score("Views", "250,083", "X, YouTube, Instagram, and Facebook", "Instagram 50,800 is a manual Insights read as of about 10:43 CT Oct 2, not a live public count. Separate X carousel row: 1,053 views, 30 likes, 1 comment, 0 shares."),
-        score("Likes and reactions", "4,418", "", "X 1,073 · YouTube 633 · Instagram 2,469 · Facebook 243 · X carousel 30 (separate row)"),
-        score("Comments", "405", "", "X 55 · YouTube 111 · Instagram 214 · Facebook 25"),
-        score("Shares", "177", "", "X 82 reposts and 23 quotes. Instagram 42 reposts at " + clockZoneText(IG_REPOSTS) + ". Facebook 30 shares. YouTube shares not shown.")
+        score("Views", fmt(sumKnown(rows, "views")), "X, YouTube, Instagram, and Facebook", "Instagram 50,800 is the reel only, a manual Insights read as of about 10:43 CT Oct 2, not a live public count. Carousel views are unknown and are not included."),
+        score("Likes and reactions", fmt(sumKnown(rows, "likes")), "", channelBreakdown("likes")),
+        score("Comments", fmt(sumKnown(rows, "comments")), "", channelBreakdown("comments")),
+        score("Shares", fmt(sumKnown(rows, "shares")), "", "X 82 reposts and 23 quotes. Instagram 42 reposts at " + clockZoneText(IG_REPOSTS) + ". Facebook 30 shares. YouTube shares not shown. Instagram carousel shares were not shown.")
       ].join("");
     }
     var p = rows[0];
@@ -1405,15 +1402,23 @@
     var viewsNote = p.views == null
       ? p.name + " views not shown"
       : (p.id === "instagram"
-        ? "Manual Insights read as of about 10:43 CT Oct 2, not a live public count"
-        : (p.id === "facebook" ? asofNote + " public figure" : (p.id === "x" ? asofNote + ". Carousel row: 532 views, 14 likes, 0 comments, 0 shares." : asofNote)));
+        ? "Views are the reel only, a manual Insights read as of about 10:43 CT Oct 2, not a live public count. Likes and comments include the Oct 2 carousel."
+        : (p.id === "facebook" ? asofNote + " public figure" : (p.id === "x" ? asofNote + ". Video and Oct 2 carousel." : asofNote)));
     var commentsNote = p.comments == null
       ? p.name + " comments not shown"
-      : (p.commentsWhen ? (labeledInstant(p.commentsWhen) ? clockZoneText(labeledInstant(p.commentsWhen)) : p.commentsWhen) : asofNote);
+      : (p.id === "instagram"
+        ? asofNote + ". Includes the Oct 2 carousel."
+        : (p.id === "x"
+          ? asofNote + ". Video and Oct 2 carousel."
+          : (p.commentsWhen ? (labeledInstant(p.commentsWhen) ? clockZoneText(labeledInstant(p.commentsWhen)) : p.commentsWhen) : asofNote)));
     var sharesNote = p.shares == null
       ? p.name + " shares not shown"
-      : (p.id === "x" ? "82 reposts and 23 quotes" : (p.sharesWhen ? (labeledInstant(p.sharesWhen) ? clockZoneText(labeledInstant(p.sharesWhen)) : p.sharesWhen) : ""));
-    var likesNote = p.id === "facebook" ? "Reactions at " + asofNote : asofNote;
+      : (p.id === "x" ? "82 reposts and 23 quotes. Video and Oct 2 carousel." : (p.id === "instagram" ? "Reel only. " + (labeledInstant(p.sharesWhen) ? clockZoneText(labeledInstant(p.sharesWhen)) : p.sharesWhen) + ". Carousel shares were not shown." : (p.sharesWhen ? (labeledInstant(p.sharesWhen) ? clockZoneText(labeledInstant(p.sharesWhen)) : p.sharesWhen) : "")));
+    var likesNote = p.id === "facebook"
+      ? "Reactions at " + asofNote
+      : (p.id === "instagram"
+        ? asofNote + ". Includes the Oct 2 carousel."
+        : (p.id === "x" ? asofNote + ". Video and Oct 2 carousel." : asofNote));
     return [
       score("Views", p.views == null ? "—" : fmt(p.views), "", viewsNote),
       score("Likes and reactions", p.likes == null ? "—" : fmt(p.likes), "", likesNote),
@@ -1644,10 +1649,10 @@
     });
     viewItems.sort(function (a, b) { return b.value - a.value; });
     var viewHint = current === "all"
-      ? "Latest figure for each post. Instagram is a manual Insights read, not a live public count."
+      ? "Known views for each channel. Instagram is the reel only, a manual Insights read, not a live public count. Carousel views are unknown."
       : (current === "instagram"
-        ? "Manual Insights read as of about 10:43 CT Oct 2, not a live public count."
-        : "Latest public figure for this post.");
+        ? "Views are the reel only, a manual Insights read as of about 10:43 CT Oct 2, not a live public count. Carousel views are unknown."
+        : (current === "x" ? "Video and Oct 2 carousel." : "Latest public figure for this channel."));
     var missingLine = null;
     if (current === "all" && missingViews.length) missingLine = missingViews.join(", ") + " views were not shown";
     else if (missingViews.length && !viewItems.length) {
@@ -1662,7 +1667,7 @@
     var aud = rows.map(function (p) {
       return { name: p.name, url: p.url, value: p.audience, label: p.audienceLabel, color: p.color };
     }).sort(function (a, b) { return b.value - a.value; });
-    return '<div class="card"><h2>Launch post views</h2><p class="hint">' + esc(viewHint) + '</p>' + viewBody + '</div>' +
+    return '<div class="card"><h2>Campaign Views</h2><p class="hint">' + esc(viewHint) + '</p>' + viewBody + '</div>' +
       '<div class="card"><h2>Audience</h2><p class="hint">Account size, not reach of this post.</p>' + barSvg(aud, null) + '</div>';
   }
 
@@ -1674,28 +1679,39 @@
     return n == null ? "—" : fmt(n);
   }
 
+  function postLinks(p) {
+    var links = p.links && p.links.length ? p.links : [{ href: p.url, label: p.name }];
+    if (links.length < 2) {
+      return '<a href="' + esc(links[0].href) + '" target="_blank" rel="noopener">' + esc(p.name) + '</a>';
+    }
+    return esc(p.name) + '<div class="when">' + links.map(function (l) {
+      return '<a href="' + esc(l.href) + '" target="_blank" rel="noopener">' + esc(l.label) + '</a>';
+    }).join(" · ") + '</div>';
+  }
+
   function tableRows(rows) {
     function rowHtml(p) {
       var shares = p.id === "facebook"
         ? esc(p.sharesCell) + whenSpan("kept; not re-shown")
         : esc(p.sharesCell || (p.shares == null ? "—" : String(p.shares)));
       var comments = cellNum(p.comments) + whenSpan(p.commentsWhen);
-      var viewsNote = (p.id === "instagram" && p.views != null)
-        ? whenSpan("manual Insights read, about 10:43 CT Oct 2, not a live public count")
-        : "";
+      var viewsNote = "";
+      if (p.id === "instagram" && p.views != null) {
+        viewsNote = whenSpan("reel only, manual Insights, about 10:43 CT Oct 2. Likes and comments include the Oct 2 carousel.");
+      } else if (p.coverage) {
+        viewsNote = whenSpan(p.coverage);
+      }
+      var other = p.other || "";
+      if (p.coverage) other = other + (other ? ". " : "") + p.coverage;
       return '<tr data-url="' + esc(p.url) + '">' +
-        '<td class="plat"><a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.name) + '</a></td>' +
+        '<td class="plat">' + postLinks(p) + '</td>' +
         '<td>' + cellNum(p.views) + viewsNote + '</td>' +
-        '<td>' + cellNum(p.likes) + '</td>' +
-        '<td>' + comments + '</td>' +
-        '<td>' + shares + '</td>' +
-        '<td>' + esc(p.other) + '</td></tr>';
+        '<td>' + cellNum(p.likes) + (p.id === "instagram" ? whenSpan("includes the Oct 2 carousel") : "") + '</td>' +
+        '<td>' + comments + (p.id === "instagram" ? whenSpan("includes the Oct 2 carousel") : "") + '</td>' +
+        '<td>' + shares + (p.id === "instagram" ? whenSpan("reel only; carousel shares not shown") : "") + '</td>' +
+        '<td>' + esc(other) + '</td></tr>';
     }
-    var html = rows.map(rowHtml).join("");
-    var extras = (typeof EXTRA_POSTS !== "undefined" ? EXTRA_POSTS : []).filter(function (p) {
-      return current === "all" || current === p.platform || current === p.id;
-    });
-    return html + extras.map(rowHtml).join("");
+    return rows.map(rowHtml).join("");
   }
 
   function bindTips(root) {
