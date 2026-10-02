@@ -79,11 +79,11 @@
     <div class="head">
       <div>
         <h1><img class="wordmark" src="reap-ir-50-wordmark.png" alt="REAP-IR-50 social"></h1>
-        <p class="sub">Launch posts only. Figures as of 8:29pm CT Oct 1, 2026. Instagram views not shown. Instagram reposts 39 at 6:06pm.</p>
+        <p class="sub">Launch posts only. Figures as of 8:36pm CT Oct 1, 2026. Instagram views not shown. Instagram reposts 39 at 6:06pm.</p>
       </div>
       <div class="head-side">
         <img class="trijicon" src="trijicon-logo.svg" alt="Trijicon">
-        <div class="chip"><span>Date range</span>Oct 1, 2026 · 10:01am–8:29pm CT</div>
+        <div class="chip"><span>Date range</span>Oct 1, 2026 · 10:01am–8:36pm CT</div>
         <div class="chip" id="refresh-chip"><span>Next refresh</span><b id="refresh-count">5:00</b></div>
       </div>
     </div>
@@ -155,14 +155,14 @@
       </li>
     </ul>
     <footer>
-      A dash is not zero. The live page updates when a public number changes. X followers are 177,635. YouTube has 18.5K subscribers. Instagram has 731K followers. Facebook followers are about 308K. Some earlier X and Facebook chart points used rounded public labels.
+      A dash is not zero. The live page updates when a public number changes. X followers are 177,637. YouTube has 18.5K subscribers. Instagram has 731K followers. Facebook followers are about 308K. Some earlier X and Facebook chart points used rounded public labels.
     </footer>
   </div>
 </div>
 <div class="tip" id="tip" role="tooltip"></div>
 <script>
 (function () {
-  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29"];
+  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29", "8:36"];
 
   var DATA = [
     {
@@ -170,13 +170,13 @@
       name: "X",
       url: "https://x.com/Trijicon/status/2105674422946308484",
       color: "#D6001C",
-      views: 109102,
-      likes: 765,
+      views: 109644,
+      likes: 774,
       comments: 48,
       shares: 57,
       sharesCell: "45 reposts, 12 quotes",
-      other: "170 bookmarks",
-      audience: 177635,
+      other: "173 bookmarks",
+      audience: 177637,
       audienceLabel: "177.6K",
       series: [
         { t: "3:55", v: 81053 },
@@ -209,7 +209,8 @@
         { t: "8:07", v: 107385 },
         { t: "8:10", v: 107665 },
         { t: "8:19", v: 108314 },
-        { t: "8:29", v: 109102 }
+        { t: "8:29", v: 109102 },
+        { t: "8:36", v: 109644 }
       ]
     },
     {
@@ -217,8 +218,8 @@
       name: "YouTube",
       url: "https://www.youtube.com/watch?v=GL4YznS9ETg",
       color: "#cfcfcf",
-      views: 18532,
-      likes: 425,
+      views: 18791,
+      likes: 428,
       comments: 83,
       shares: null,
       sharesCell: "—",
@@ -256,7 +257,8 @@
         { t: "8:07", v: 17116 },
         { t: "8:10", v: 17195 },
         { t: "8:19", v: 17885 },
-        { t: "8:29", v: 18532 }
+        { t: "8:29", v: 18532 },
+        { t: "8:36", v: 18791 }
       ]
     },
     {
@@ -265,7 +267,7 @@
       url: "https://www.instagram.com/trijicon/reel/Dd9Lviggari/",
       color: "#b9b9b9",
       views: null,
-      likes: 2121,
+      likes: 2126,
       comments: 195,
       shares: 39,
       sharesWhen: "6:06pm",
@@ -280,8 +282,8 @@
       name: "Facebook",
       url: "https://www.facebook.com/reel/1570702804807840/",
       color: "#e63124",
-      views: 9806,
-      likes: 158,
+      views: 9970,
+      likes: 160,
       comments: 16,
       shares: 21,
       sharesCell: "21",
@@ -319,7 +321,8 @@
         { t: "8:07", v: 9356 },
         { t: "8:10", v: 9445 },
         { t: "8:19", v: 9615 },
-        { t: "8:29", v: 9806 }
+        { t: "8:29", v: 9806 },
+        { t: "8:36", v: 9970 }
       ]
     }
   ];
@@ -356,8 +359,8 @@
   function metricCards(rows) {
     if (rows.length === 4) {
       return [
-        score("Views", "137,440", "X, YouTube, and Facebook", "Instagram views not shown"),
-        score("Likes and reactions", "3,469", "", "X 765 · YouTube 425 · Instagram 2,121 · Facebook 158"),
+        score("Views", "138,405", "X, YouTube, and Facebook", "Instagram views not shown"),
+        score("Likes and reactions", "3,488", "", "X 774 · YouTube 428 · Instagram 2,126 · Facebook 160"),
         score("Comments", "342", "", "X 48 · YouTube 83 · Instagram 195 · Facebook 16"),
         score("Shares", "117", "", "X 45 reposts and 12 quotes. Instagram 39 reposts at 6:06pm. Facebook 21 shares. YouTube shares not shown.")
       ].join("");
