@@ -671,7 +671,7 @@
       name: "Instagram",
       url: "https://www.instagram.com/trijicon/reel/Dd9Lviggari/",
       color: "#b9b9b9",
-      views: null,
+      views: 50800,
       likes: 2422,
       comments: 212,
       shares: 39,
@@ -680,7 +680,9 @@
       other: "731K followers",
       audience: 731000,
       audienceLabel: "731K",
-      series: null
+      series: [
+        { t: "10:45", v: 50800, approx: "Manual Insights read as of about 10:43 CT Oct 2, not a live public count" }
+      ]
     },
     {
       id: "facebook",
@@ -988,7 +990,7 @@
   function metricCards(rows) {
     if (rows.length === 4) {
       return [
-        score("Views", "190,567", "X, YouTube, and Facebook", "Instagram views not shown"),
+        score("Views", "241,367", "X, YouTube, Instagram, and Facebook", "Instagram 50,800 is a manual Insights read as of about 10:43 CT Oct 2, not a live public count"),
         score("Likes and reactions", "4,238", "", "X 1,038 · YouTube 546 · Instagram 2,422 · Facebook 232"),
         score("Comments", "394", "", "X 53 · YouTube 106 · Instagram 212 · Facebook 23"),
         score("Shares", "165", "", "X 80 reposts and 21 quotes. Instagram 39 reposts at " + clockZoneText(IG_REPOSTS) + ". Facebook 25 shares. YouTube shares not shown.")
@@ -998,7 +1000,9 @@
     var asofNote = clockZoneText(AS_OF);
     var viewsNote = p.views == null
       ? p.name + " views not shown"
-      : (p.id === "facebook" ? asofNote + " public figure" : asofNote);
+      : (p.id === "instagram"
+        ? "Manual Insights read as of about 10:43 CT Oct 2, not a live public count"
+        : (p.id === "facebook" ? asofNote + " public figure" : asofNote));
     var commentsNote = p.comments == null
       ? p.name + " comments not shown"
       : (p.commentsWhen ? (labeledInstant(p.commentsWhen) ? clockZoneText(labeledInstant(p.commentsWhen)) : p.commentsWhen) : asofNote);
@@ -1147,6 +1151,11 @@
         ], 0, 30000, [0, 7500, 15000, 22500, 30000]) +
         '</div>'
       );
+      cards.push(
+        '<div class="card"><h2><a href="' + byId.instagram.url + '" target="_blank" rel="noopener">Instagram</a> views</h2><p class="hint">One point at the latest check. Manual Insights read as of about 10:43 CT Oct 2, not a live public count.</p>' +
+        lineSvg([{ name: "Instagram", color: "#b9b9b9", points: byId.instagram.series }], 0, 60000, [0, 15000, 30000, 45000, 60000]) +
+        '</div>'
+      );
       return { html: cards.join(""), single: false };
     }
 
@@ -1180,7 +1189,9 @@
     }
     if (showI && !showX && !showY && !showF) {
       cards.push(
-        '<div class="card"><h2><a href="' + byId.instagram.url + '" target="_blank" rel="noopener">Instagram</a> views</h2><p class="hint">No afternoon view series.</p><div class="empty">Instagram views were not shown, so there is no line to plot. A dash is not zero.</div></div>'
+        '<div class="card"><h2><a href="' + byId.instagram.url + '" target="_blank" rel="noopener">Instagram</a> views</h2><p class="hint">One point at the latest check. Manual Insights read as of about 10:43 CT Oct 2, not a live public count.</p>' +
+        lineSvg([{ name: "Instagram", color: "#b9b9b9", points: byId.instagram.series }], 0, 60000, [0, 15000, 30000, 45000, 60000]) +
+        '</div>'
       );
     }
     return { html: cards.join(""), single: cards.length < 2 };
@@ -1228,9 +1239,13 @@
       else viewItems.push({ name: p.name, url: p.url, value: p.views, label: fmt(p.views), color: p.color });
     });
     viewItems.sort(function (a, b) { return b.value - a.value; });
-    var viewHint = current === "all" ? "Latest public figure for each post." : "Latest public figure for this post.";
+    var viewHint = current === "all"
+      ? "Latest figure for each post. Instagram is a manual Insights read, not a live public count."
+      : (current === "instagram"
+        ? "Manual Insights read as of about 10:43 CT Oct 2, not a live public count."
+        : "Latest public figure for this post.");
     var missingLine = null;
-    if (current === "all") missingLine = "Instagram views were not shown";
+    if (current === "all" && missingViews.length) missingLine = missingViews.join(", ") + " views were not shown";
     else if (missingViews.length && !viewItems.length) {
       /* handled as items with dashes if we include them; All keeps IG as a caption, single IG has no bar */
     }
@@ -1263,7 +1278,7 @@
       var comments = cellNum(p.comments) + whenSpan(p.commentsWhen);
       return '<tr data-url="' + esc(p.url) + '">' +
         '<td class="plat"><a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.name) + '</a></td>' +
-        '<td>' + cellNum(p.views) + '</td>' +
+        '<td>' + cellNum(p.views) + (p.id === "instagram" && p.views != null ? whenSpan("manual Insights read, about 10:43 CT Oct 2, not a live public count") : "") + '</td>' +
         '<td>' + cellNum(p.likes) + '</td>' +
         '<td>' + comments + '</td>' +
         '<td>' + shares + '</td>' +
