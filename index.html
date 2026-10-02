@@ -24,14 +24,14 @@
   .accent { height: 4px; background: #D6001C; }
   .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 18px 24px 8px; }
   h1 { margin: 0; line-height: 0; }
-  .wordmark-sweep { position: relative; display: block; width: max-content; overflow: hidden; }
+  .wordmark-sweep { position: relative; display: block; width: max-content; max-width: 100%; margin-left: auto; overflow: hidden; }
   .wordmark-sweep::after { content: ""; position: absolute; top: 0; bottom: 0; left: -5%; width: 5%; pointer-events: none; opacity: .85; background: linear-gradient(90deg, transparent, #f4f4f4 45%, transparent); transform: translateX(0); }
   .wordmark-sweep.sweep-active::after { animation: wordmark-sweep 0.65s ease-out 1; }
   @keyframes wordmark-sweep { from { transform: translateX(0); } to { transform: translateX(2200%); } }
   @media (prefers-reduced-motion: reduce) { .wordmark-sweep.sweep-active::after { animation: none; } }
   .wordmark { height: 42px; width: auto; display: block; }
   .head-side { display: flex; flex-direction: column; align-items: stretch; gap: 10px; flex: 0 0 auto; width: max-content; max-width: 100%; }
-  .trijicon { width: 100%; height: auto; display: block; opacity: 0.55; }
+  .trijicon { height: 48px; width: auto; display: block; opacity: 0.16; }
   .sub { margin: 4px 0 0; font-size: 12px; color: #b9b9b9; max-width: 760px; line-height: 1.45; }
   .chip { border: 1px solid #2a2a2a; border-radius: 4px; padding: 8px 12px; font-size: 13px; color: #f4f4f4; background: #161616; white-space: nowrap; }
   .chip span { color: #b9b9b9; font-size: 11px; display: block; margin-bottom: 2px; }
@@ -112,11 +112,11 @@
     <div class="accent"></div>
     <div class="head">
       <div>
-        <h1><span class="wordmark-sweep"><img class="wordmark" src="reap-ir-50-wordmark.png" alt="REAP-IR-50 social"></span></h1>
+        <img class="trijicon" src="trijicon-logo.svg?v=7" alt="Trijicon">
         <p class="sub">Launch posts only. Figures as of 1:33am CT Oct 2, 2026. Instagram views not shown. Instagram reposts 39 at 6:06pm.</p>
       </div>
       <div class="head-side">
-        <img class="trijicon" src="trijicon-logo.svg?v=6" alt="Trijicon">
+        <h1><span class="wordmark-sweep"><img class="wordmark" src="reap-ir-50-wordmark.png" alt="REAP-IR-50 social"></span></h1>
         <div class="chip"><span>Date range</span>Oct 1–2, 2026 · 10:01am–1:33am CT</div>
         <div class="chip" id="refresh-chip"><span>Next refresh</span><b id="refresh-count">5:00</b></div>
       </div>
