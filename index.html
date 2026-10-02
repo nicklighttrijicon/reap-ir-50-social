@@ -25,10 +25,15 @@
   .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 18px 24px 8px; }
   h1 { margin: 0; line-height: 0; }
   .wordmark-sweep { position: relative; display: block; width: max-content; max-width: 100%; margin-left: auto; overflow: hidden; }
-  .wordmark-sweep::after { content: ""; position: absolute; top: 0; bottom: 0; left: -5%; width: 5%; pointer-events: none; opacity: .85; background: linear-gradient(90deg, transparent, #f4f4f4 45%, transparent); transform: translateX(0); }
-  .wordmark-sweep.sweep-active::after { animation: wordmark-sweep 0.65s ease-out 1; }
+  .wordmark-sweep::after, .score .v::after { content: ""; position: absolute; top: 0; bottom: 0; left: -5%; width: 5%; pointer-events: none; opacity: .85; background: linear-gradient(90deg, transparent, #f4f4f4 45%, transparent); transform: translateX(0); }
+  .wordmark-sweep.sweep-active::after, .score .v.sweep-active::after { animation: wordmark-sweep 0.65s ease-out 1; }
   @keyframes wordmark-sweep { from { transform: translateX(0); } to { transform: translateX(2200%); } }
-  @media (prefers-reduced-motion: reduce) { .wordmark-sweep.sweep-active::after { animation: none; } }
+  .sweep-blade { pointer-events: none; opacity: .85; transform-box: fill-box; transform-origin: left center; transform: translateX(-110%); }
+  .mark-sweep.sweep-active .sweep-blade { animation: mark-sweep 0.65s ease-out 1; }
+  @keyframes mark-sweep { from { transform: translateX(-100%); } to { transform: translateX(var(--sweep-to, 200%)); } }
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark-sweep.sweep-active::after, .score .v.sweep-active::after, .mark-sweep.sweep-active .sweep-blade { animation: none; }
+  }
   .wordmark { height: 42px; width: auto; display: block; }
   .head-side { display: flex; flex-direction: column; align-items: stretch; gap: 10px; flex: 0 0 auto; width: max-content; max-width: 100%; }
   .trijicon { height: 48px; width: auto; display: block; opacity: 0.16; }
@@ -46,7 +51,7 @@
   .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 12px 24px 4px; }
   .score { border: 1px solid #2a2a2a; border-radius: 4px; padding: 12px 16px 14px; background: #161616; min-height: 108px; }
   .score .k { font-size: 12px; color: #b9b9b9; }
-  .score .v { font-family: Ethnocentric, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 28px; font-weight: 400; margin-top: 2px; line-height: 1.2; color: #f4f4f4; }
+  .score .v { position: relative; display: block; width: max-content; max-width: 100%; overflow: hidden; font-family: Ethnocentric, "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 28px; font-weight: 400; margin-top: 2px; line-height: 1.2; color: #f4f4f4; }
   .score .d { font-size: 12px; margin-top: 6px; color: #b9b9b9; }
   .score .n { font-size: 12px; margin-top: 6px; color: #b9b9b9; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 24px 0; }
@@ -892,6 +897,35 @@
     ].join("");
   }
 
+  var sweepSeq = 0;
+
+  function bladeSpan(span) {
+    var w = span * 0.06;
+    if (w < 6) w = Math.min(span * 0.42, 6);
+    if (w > span) w = span;
+    if (w < 0.8) w = Math.min(span, 0.8);
+    return w;
+  }
+
+  function sweepGrad(id) {
+    return '<linearGradient id="' + id + '" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="1" y2="0">' +
+      '<stop offset="0" stop-color="#f4f4f4" stop-opacity="0"/>' +
+      '<stop offset="0.45" stop-color="#f4f4f4" stop-opacity="1"/>' +
+      '<stop offset="1" stop-color="#f4f4f4" stop-opacity="0"/></linearGradient>';
+  }
+
+  function markSweep(clipInner, x, y, span, h, gradId) {
+    var blade = bladeSpan(span);
+    var id = "ms" + (++sweepSeq);
+    var to = (span / blade * 100).toFixed(1) + "%";
+    var def = '<clipPath id="' + id + '">' + clipInner + '</clipPath>';
+    var html = '<g class="mark-sweep"><g clip-path="url(#' + id + ')">' +
+      '<rect class="sweep-blade" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) +
+      '" width="' + blade.toFixed(2) + '" height="' + h.toFixed(1) +
+      '" fill="url(#' + gradId + ')" style="--sweep-to:' + to + '"/></g></g>';
+    return { def: def, html: html };
+  }
+
   function xAt(i) {
     return 52 + i * (508 - 52) / (TIMES.length - 1);
   }
@@ -932,6 +966,8 @@
   }
 
   function lineSvg(series, min, max, ticks) {
+    var gradId = "sg" + (++sweepSeq);
+    var defs = sweepGrad(gradId);
     var grid = "";
     ticks.forEach(function (tick) {
       var y = yAt(tick, min, max);
@@ -959,11 +995,17 @@
         d += (d ? " L " : "M ") + x.toFixed(1) + "," + y.toFixed(1);
         var tipText = s.name + "\n" + clockZoneText(seriesInstant(pt.t)) + "\n" + fmt(pt.v) + (pt.approx ? "\n" + pt.approx : "");
         dots += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="3" fill="#161616" stroke="' + s.color + '" stroke-width="2"/>';
+        var pointSweep = markSweep(
+          '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="4.2"/>',
+          x - 4.2, y - 4.2, 8.4, 8.4, gradId
+        );
+        defs += pointSweep.def;
+        dots += pointSweep.html;
         dots += '<circle class="hit" data-tip="' + esc(tipText).replace(/\n/g, "&#10;") + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="10" fill="transparent" stroke="transparent"/>';
       });
       paths += '<path d="' + d + '" fill="none" stroke="' + s.color + '" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' + dots;
     });
-    return '<svg class="chart" viewBox="0 0 520 240" role="img">' + grid + labels + paths + '</svg>';
+    return '<svg class="chart" viewBox="0 0 520 240" role="img"><defs>' + defs + '</defs>' + grid + labels + paths + '</svg>';
   }
 
   function lineCards(rows) {
@@ -1028,6 +1070,8 @@
   }
 
   function barSvg(items, missingLine) {
+    var gradId = "sg" + (++sweepSeq);
+    var defs = sweepGrad(gradId);
     var known = items.filter(function (it) { return it.value != null; });
     var max = 0;
     known.forEach(function (it) { if (it.value > max) max = it.value; });
@@ -1042,15 +1086,21 @@
         body += label + '<text x="96" y="' + (y + 16) + '" font-size="12" fill="#b9b9b9">—</text>';
       } else {
         var w = Math.max(2, (it.value / max) * 340);
+        var barSweep = markSweep(
+          '<rect x="96" y="' + y + '" width="' + w.toFixed(1) + '" height="22" rx="2"/>',
+          96, y, w, 22, gradId
+        );
+        defs += barSweep.def;
         body += label +
           '<rect x="96" y="' + y + '" width="' + w.toFixed(1) + '" height="22" rx="2" fill="' + it.color + '"/>' +
+          barSweep.html +
           '<text x="' + (96 + w + 8).toFixed(1) + '" y="' + (y + 16) + '" font-size="12" fill="#f4f4f4">' + esc(it.label) + '</text>';
       }
     });
     if (missingLine) {
       body += '<text x="96" y="' + (18 + items.length * rowH + 8) + '" font-size="12" fill="#b9b9b9">' + esc(missingLine) + '</text>';
     }
-    return '<svg class="chart" viewBox="0 0 520 ' + h + '" role="img">' + body + '</svg>';
+    return '<svg class="chart" viewBox="0 0 520 ' + h + '" role="img"><defs>' + defs + '</defs>' + body + '</svg>';
   }
 
   function barCards(rows) {
@@ -1496,12 +1546,13 @@ var WORD_TAP = {"launch":[{"t":"thermal","n":22,"kind":"topic","color":"#b9b9b9"
 </script>
 <script>
 (function () {
-  var logo = document.querySelector(".wordmark-sweep");
-  if (!logo || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   function runSweep() {
-    logo.classList.remove("sweep-active");
-    void logo.offsetWidth;
-    logo.classList.add("sweep-active");
+    var nodes = document.querySelectorAll(".wordmark-sweep, .score .v, .mark-sweep");
+    if (!nodes.length) return;
+    for (var i = 0; i < nodes.length; i++) nodes[i].classList.remove("sweep-active");
+    void document.body.offsetWidth;
+    for (var j = 0; j < nodes.length; j++) nodes[j].classList.add("sweep-active");
   }
   runSweep();
   setInterval(runSweep, 60000);
