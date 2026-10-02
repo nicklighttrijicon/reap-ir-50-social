@@ -71,10 +71,23 @@
   .cloud img { width: 100%; height: auto; display: block; background: #161616; }
   .cloud-hint { margin: 6px 24px 0; font-size: 11px; color: #b9b9b9; }
   .cloud-viewer[hidden] { display: none; }
-  .cloud-viewer { position: fixed; z-index: 100; inset: 0; display: flex; align-items: center; justify-content: center; background: #000; touch-action: none; }
-  .cloud-viewer img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; transform: translate3d(0, 0, 0) scale(1); transform-origin: center center; user-select: none; -webkit-user-drag: none; }
+  .cloud-viewer { position: fixed; z-index: 100; inset: 0; display: flex; flex-direction: column; align-items: stretch; background: #000; touch-action: none; }
+  .cloud-viewer img { display: block; width: auto; height: auto; min-width: 0; min-height: 0; max-width: 100%; max-height: 100%; object-fit: contain; transform: translate3d(0, 0, 0) scale(1); transform-origin: center center; user-select: none; -webkit-user-drag: none; }
   .cloud-viewer-close { position: absolute; z-index: 1; top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); width: 44px; height: 44px; border: 1px solid #b9b9b9; border-radius: 50%; background: rgba(0,0,0,.72); color: #f4f4f4; font: 28px/38px Arial, sans-serif; cursor: pointer; padding: 0; }
   .cloud-viewer-close:hover, .cloud-viewer-close:focus-visible { background: #222; }
+  .cloud-viewer-close { z-index: 2; }
+  .cloud-stage { flex: 1 1 auto; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .cloud-sources { flex: 0 1 auto; align-self: stretch; max-height: 28%; overflow: auto; background: #0a0a0a; color: #b9b9b9; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); touch-action: pan-y; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  .cloud-sources h2 { margin: 0 0 4px; font-size: 12px; font-weight: 500; line-height: 1.3; color: #b9b9b9; }
+  .cloud-sources ul { list-style: none; margin: 0; padding: 0; }
+  .cloud-sources li { padding: 8px 0; }
+  .cloud-sources .who { display: block; font-size: 12px; line-height: 1.35; color: #f4f4f4; }
+  .cloud-sources a { color: #f4f4f4; font-size: 11px; line-height: 1.35; word-break: break-all; }
+  .cloud-sources .why { display: block; margin-top: 1px; font-size: 12px; line-height: 1.35; color: #b9b9b9; }
+  @media (min-width: 760px) {
+    .cloud-viewer { flex-direction: row; }
+    .cloud-sources { flex: 0 0 auto; width: min(300px, 34vw); margin-top: calc(64px + env(safe-area-inset-top, 0px)); max-height: calc(100% - 64px - env(safe-area-inset-top, 0px)); }
+  }
   .legend2 { display: flex; gap: 16px; font-size: 12px; color: #b9b9b9; padding: 8px 24px 0; flex-wrap: wrap; }
   .saying-hint { margin: 2px 24px 0; font-size: 11px; color: #b9b9b9; }
   footer { padding: 14px 24px 18px; font-size: 11px; color: #b9b9b9; line-height: 1.45; }
@@ -100,11 +113,11 @@
     <div class="head">
       <div>
         <h1><span class="wordmark-sweep"><img class="wordmark" src="reap-ir-50-wordmark.png" alt="REAP-IR-50 social"></span></h1>
-        <p class="sub">Launch posts only. Figures as of 1:12am CT Oct 2, 2026. Instagram views not shown. Instagram reposts 39 at 6:06pm.</p>
+        <p class="sub">Launch posts only. Figures as of 1:16am CT Oct 2, 2026. Instagram views not shown. Instagram reposts 39 at 6:06pm.</p>
       </div>
       <div class="head-side">
         <img class="trijicon" src="trijicon-logo.svg?v=4" alt="Trijicon">
-        <div class="chip"><span>Date range</span>Oct 1–2, 2026 · 10:01am–1:12am CT</div>
+        <div class="chip"><span>Date range</span>Oct 1–2, 2026 · 10:01am–1:16am CT</div>
         <div class="chip" id="refresh-chip"><span>Next refresh</span><b id="refresh-count">5:00</b></div>
       </div>
     </div>
@@ -134,7 +147,7 @@
       <span><i class="sw" style="background:#f4f4f4"></i>Praise or want</span>
       <span><i class="sw" style="background:#b9b9b9"></i>Topic</span>
     </div>
-    <div class="cloud" role="button" tabindex="0" aria-label="Expand comment word cloud"><img src="wordcloud.png" alt="Comment word cloud"/></div>
+    <div class="cloud" data-cloud="launch" role="button" tabindex="0" aria-label="Expand comment word cloud"><img src="wordcloud.png" alt="Comment word cloud"/></div>
     <p class="cloud-hint">Tap to expand</p>
     <div class="section" style="padding-top:18px"><h2>Outside chatter</h2></div>
     <p class="saying-hint">public posts and videos mentioning REAP-IR-50 that are not Trijicon's own launch posts. Not a complete scan of Instagram or Facebook.</p>
@@ -143,11 +156,165 @@
       <span><i class="sw" style="background:#f4f4f4"></i>Praise or want</span>
       <span><i class="sw" style="background:#b9b9b9"></i>Topic</span>
     </div>
-    <div class="cloud" role="button" tabindex="0" aria-label="Expand Outside chatter word cloud"><img src="wordcloud-chatter.png" alt="Outside chatter word cloud"/></div>
+    <div class="cloud" data-cloud="chatter" role="button" tabindex="0" aria-label="Expand Outside chatter word cloud"><img src="wordcloud-chatter.png" alt="Outside chatter word cloud"/></div>
     <p class="cloud-hint">Tap to expand</p>
     <div id="cloud-viewer" class="cloud-viewer" hidden aria-hidden="true" role="dialog" aria-label="Expanded word cloud">
       <button type="button" class="cloud-viewer-close" aria-label="Close expanded word cloud">&times;</button>
-      <img alt="" draggable="false"/>
+      <div class="cloud-stage">
+        <img alt="" draggable="false"/>
+      </div>
+      <aside class="cloud-sources" aria-label="Sources">
+        <h2>Sources</h2>
+        <ul class="cloud-source-list" data-for="launch">
+          <li>
+            <span class="who">X · Trijicon</span>
+            <a href="https://x.com/Trijicon/status/2105674422946308484" target="_blank" rel="noopener noreferrer">https://x.com/Trijicon/status/2105674422946308484</a>
+            <span class="why">comments on price, size, image quality, and made-in-USA cost</span>
+          </li>
+          <li>
+            <span class="who">YouTube · Trijicon</span>
+            <a href="https://www.youtube.com/watch?v=GL4YznS9ETg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=GL4YznS9ETg</a>
+            <span class="why">comments on price, size, resolution, and made in the USA</span>
+          </li>
+          <li>
+            <span class="who">Instagram · Trijicon</span>
+            <a href="https://www.instagram.com/trijicon/reel/Dd9Lviggari/" target="_blank" rel="noopener noreferrer">https://www.instagram.com/trijicon/reel/Dd9Lviggari/</a>
+            <span class="why">comments on price, resolution, and made in the USA</span>
+          </li>
+          <li>
+            <span class="who">Facebook · Trijicon</span>
+            <a href="https://www.facebook.com/reel/1570702804807840/" target="_blank" rel="noopener noreferrer">https://www.facebook.com/reel/1570702804807840/</a>
+            <span class="why">comments on price, size, and made in the USA</span>
+          </li>
+        </ul>
+        <ul class="cloud-source-list" data-for="chatter" hidden>
+          <li>
+            <span class="who">YouTube · Shark Coast Tactical</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA</a>
+            <span class="why">dealer first look at the REAP-IR 50 LRF</span>
+          </li>
+          <li>
+            <span class="who">Web · EuroOptic</span>
+            <a href="https://www.eurooptic.com/trijicon-reap-ir-thermal-sights" target="_blank" rel="noopener noreferrer">https://www.eurooptic.com/trijicon-reap-ir-thermal-sights</a>
+            <span class="why">listing for the REAP-IR-50LRF, including the sensor and price</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @matthewconnor5483</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugx5wvy05JTX0p4KmMx4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugx5wvy05JTX0p4KmMx4AaABAg</a>
+            <span class="why">calls the resolution dated</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @stronglikebull2994</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgxRePBAfeSIJ6TA_Z54AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgxRePBAfeSIJ6TA_Z54AaABAg</a>
+            <span class="why">says the live view was sharper than the video and expects prices near $7,800</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @kahukusgarlicbred2141</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugz2XXqumWIOYUYRAF14AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugz2XXqumWIOYUYRAF14AaABAg</a>
+            <span class="why">dislikes the intro</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @matthewconnor5483</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugye9H76S0g7y7IcmFd4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugye9H76S0g7y7IcmFd4AaABAg</a>
+            <span class="why">objects to a cable sticking straight out of the body</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @Joe_9EDC</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzIXcs2zQw6xUhYMQl4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzIXcs2zQw6xUhYMQl4AaABAg</a>
+            <span class="why">calls the specs and image quality dated</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @zulubravo9434</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugz2ehmmPbTTrYXTzxB4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugz2ehmmPbTTrYXTzxB4AaABAg</a>
+            <span class="why">says it is overpriced aside from being made in the USA</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @Fundingsecured42069</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugw7xhZ1FH3QuDOLEEF4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugw7xhZ1FH3QuDOLEEF4AaABAg</a>
+            <span class="why">says it is huge</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @isaiahaguilar5977</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugxl-1NmT50maFyLrih4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugxl-1NmT50maFyLrih4AaABAg</a>
+            <span class="why">hard pass</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @carterm950</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugyd4kgY15btx4k053J4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugyd4kgY15btx4k053J4AaABAg</a>
+            <span class="why">asks the price</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @FirstLastGuy</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgwSFspmokMG_2EWtsp4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgwSFspmokMG_2EWtsp4AaABAg</a>
+            <span class="why">says China is ahead on thermal offerings</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @iggmoeactual</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzKktUOnI5xUqXgzk54AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzKktUOnI5xUqXgzk54AaABAg</a>
+            <span class="why">questions the 12 micron sensor</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @aNevadaPerson</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzXRoW3hYMEteCB7Xp4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzXRoW3hYMEteCB7Xp4AaABAg</a>
+            <span class="why">prices older REAP-IR models and says the 50 will not be cheap</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @PorkPursuit</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzlXwr7osdn_Fv42OR4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzlXwr7osdn_Fv42OR4AaABAg</a>
+            <span class="why">says an older REAP-IR looks better than the video</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @justincase6908</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzfVquGNMy_pHF5nIt4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzfVquGNMy_pHF5nIt4AaABAg</a>
+            <span class="why">calls it brick-sized with a poor display</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @lucass4758</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzjXOr6fwQEOR8FOoF4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzjXOr6fwQEOR8FOoF4AaABAg</a>
+            <span class="why">calls it overpriced next to other thermals</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @WettDoggTV</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgxjBeeshLS_smjP_014AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgxjBeeshLS_smjP_014AaABAg</a>
+            <span class="why">calls the sight picture poor</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @tinaann3323</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugw9nznirobBRwm4PoF4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugw9nznirobBRwm4PoF4AaABAg</a>
+            <span class="why">says a Trijicon name means overpriced</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @rmp5s</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgyOO3yDe-JXhMWehC54AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgyOO3yDe-JXhMWehC54AaABAg</a>
+            <span class="why">says the image looks awful for the price</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @chandlerjackson7377</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzbYZyFfyI9vDw1qpZ4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgzbYZyFfyI9vDw1qpZ4AaABAg</a>
+            <span class="why">says the image looks poor for the price</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @samhixon3593</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgxxvebUMiMHo1raO4x4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgxxvebUMiMHo1raO4x4AaABAg</a>
+            <span class="why">says an ATN looks better</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @donniesteen4982</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgyAdnx3E-hWjBrdg0F4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgyAdnx3E-hWjBrdg0F4AaABAg</a>
+            <span class="why">says the sight picture is poor unless the price is very low</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @dcleboski698</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgxndFdhyxMo9kLVAWF4AaABAg" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=UgxndFdhyxMo9kLVAWF4AaABAg</a>
+            <span class="why">says the resolution is awful</span>
+          </li>
+          <li>
+            <span class="who">YouTube · @Deeked</span>
+            <a href="https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugx5wvy05JTX0p4KmMx4AaABAg.AbR2qGQWODBAbRXVhXunOB" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=PTW-moeHIkA&amp;lc=Ugx5wvy05JTX0p4KmMx4AaABAg.AbR2qGQWODBAbRXVhXunOB</a>
+            <span class="why">laughing reply with no other words</span>
+          </li>
+        </ul>
+      </aside>
     </div>
     <p class="saying-hint">Thin sample: one dealer video, 23 comments read on that video, and one EuroOptic listing. The comments panel said 42; replies were not all opened. No other public X, Instagram, or Facebook post naming REAP-IR-50 was found. Comment times below are the relative labels shown around 7:20pm CT.</p>
     <ul class="sources">
@@ -182,14 +349,14 @@
       </li>
     </ul>
     <footer>
-      A dash is not zero. The live page updates when a public number changes. X followers are 177,658. YouTube has 18.6K subscribers. Instagram has 731K followers. Facebook followers are about 308K. Some earlier X and Facebook chart points used rounded public labels.
+      A dash is not zero. The live page updates when a public number changes. X followers are 177,659. YouTube has 18.6K subscribers. Instagram has 731K followers. Facebook followers are about 308K. Some earlier X and Facebook chart points used rounded public labels.
     </footer>
   </div>
 </div>
 <div class="tip" id="tip" role="tooltip"></div>
 <script>
 (function () {
-  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29", "8:36", "8:39", "8:46", "8:53", "9:00", "9:05", "9:13", "9:22", "9:26", "9:32", "9:36", "9:42", "9:50", "9:57", "10:03", "10:13", "10:18", "10:22", "10:33", "10:42", "10:50", "10:56", "11:00", "11:04", "11:11", "11:16", "11:26", "11:29", "11:35", "11:42", "11:48", "11:56", "11:58", "12:05", "12:16", "12:23", "12:28", "12:32", "12:38", "12:40", "12:54", "12:56", "1:02", "1:07", "1:12"];
+  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29", "8:36", "8:39", "8:46", "8:53", "9:00", "9:05", "9:13", "9:22", "9:26", "9:32", "9:36", "9:42", "9:50", "9:57", "10:03", "10:13", "10:18", "10:22", "10:33", "10:42", "10:50", "10:56", "11:00", "11:04", "11:11", "11:16", "11:26", "11:29", "11:35", "11:42", "11:48", "11:56", "11:58", "12:05", "12:16", "12:23", "12:28", "12:32", "12:38", "12:40", "12:54", "12:56", "1:02", "1:07", "1:12", "1:16"];
 
   var DATA = [
     {
@@ -197,13 +364,13 @@
       name: "X",
       url: "https://x.com/Trijicon/status/2105674422946308484",
       color: "#D6001C",
-      views: 125843,
-      likes: 880,
+      views: 125997,
+      likes: 881,
       comments: 52,
-      shares: 73,
-      sharesCell: "59 reposts, 14 quotes",
-      other: "204 bookmarks",
-      audience: 177658,
+      shares: 74,
+      sharesCell: "59 reposts, 15 quotes",
+      other: "205 bookmarks",
+      audience: 177659,
       audienceLabel: "177.7K",
       series: [
         { t: "3:55", v: 81053 },
@@ -281,7 +448,8 @@
         { t: "12:56", v: 125396 },
         { t: "1:02", v: 125523 },
         { t: "1:07", v: 125685 },
-        { t: "1:12", v: 125843 }
+        { t: "1:12", v: 125843 },
+        { t: "1:16", v: 125997 }
       ]
     },
     {
@@ -289,8 +457,8 @@
       name: "YouTube",
       url: "https://www.youtube.com/watch?v=GL4YznS9ETg",
       color: "#cfcfcf",
-      views: 25165,
-      likes: 495,
+      views: 25228,
+      likes: 496,
       comments: 91,
       shares: null,
       sharesCell: "—",
@@ -373,7 +541,8 @@
         { t: "12:56", v: 24989 },
         { t: "1:02", v: 25061 },
         { t: "1:07", v: 25122 },
-        { t: "1:12", v: 25165 }
+        { t: "1:12", v: 25165 },
+        { t: "1:16", v: 25228 }
       ]
     },
     {
@@ -382,7 +551,7 @@
       url: "https://www.instagram.com/trijicon/reel/Dd9Lviggari/",
       color: "#b9b9b9",
       views: null,
-      likes: 2285,
+      likes: 2287,
       comments: 207,
       shares: 39,
       sharesWhen: "6:06pm",
@@ -397,8 +566,8 @@
       name: "Facebook",
       url: "https://www.facebook.com/reel/1570702804807840/",
       color: "#e63124",
-      views: 13929,
-      likes: 202,
+      views: 13942,
+      likes: 203,
       comments: 20,
       shares: 24,
       sharesCell: "24",
@@ -481,7 +650,8 @@
         { t: "12:56", v: 13870 },
         { t: "1:02", v: 13886 },
         { t: "1:07", v: 13911 },
-        { t: "1:12", v: 13929 }
+        { t: "1:12", v: 13929 },
+        { t: "1:16", v: 13942 }
       ]
     }
   ];
@@ -518,23 +688,23 @@
   function metricCards(rows) {
     if (rows.length === 4) {
       return [
-        score("Views", "164,937", "X, YouTube, and Facebook", "Instagram views not shown"),
-        score("Likes and reactions", "3,862", "", "X 880 · YouTube 495 · Instagram 2,285 · Facebook 202"),
+        score("Views", "165,167", "X, YouTube, and Facebook", "Instagram views not shown"),
+        score("Likes and reactions", "3,867", "", "X 881 · YouTube 496 · Instagram 2,287 · Facebook 203"),
         score("Comments", "370", "", "X 52 · YouTube 91 · Instagram 207 · Facebook 20"),
-        score("Shares", "136", "", "X 59 reposts and 14 quotes. Instagram 39 reposts at 6:06pm. Facebook 24 shares. YouTube shares not shown.")
+        score("Shares", "137", "", "X 59 reposts and 15 quotes. Instagram 39 reposts at 6:06pm. Facebook 24 shares. YouTube shares not shown.")
       ].join("");
     }
     var p = rows[0];
     var viewsNote = p.views == null
       ? p.name + " views not shown"
-      : (p.id === "facebook" ? "1:12am CT public figure" : "1:12am CT");
+      : (p.id === "facebook" ? "1:16am CT public figure" : "1:16am CT");
     var commentsNote = p.comments == null
       ? p.name + " comments not shown"
-      : (p.commentsWhen ? p.commentsWhen + " CT" : "1:12am CT");
+      : (p.commentsWhen ? p.commentsWhen + " CT" : "1:16am CT");
     var sharesNote = p.shares == null
       ? p.name + " shares not shown"
-      : (p.id === "x" ? "59 reposts and 14 quotes" : (p.sharesWhen ? p.sharesWhen + " CT" : ""));
-    var likesNote = p.id === "facebook" ? "Reactions at 1:12am CT" : "1:12am CT";
+      : (p.id === "x" ? "59 reposts and 15 quotes" : (p.sharesWhen ? p.sharesWhen + " CT" : ""));
+    var likesNote = p.id === "facebook" ? "Reactions at 1:16am CT" : "1:16am CT";
     return [
       score("Views", p.views == null ? "—" : fmt(p.views), "", viewsNote),
       score("Likes and reactions", p.likes == null ? "—" : fmt(p.likes), "", likesNote),
@@ -624,7 +794,7 @@
     if (current === "all") {
       cards.push(
         '<div class="card"><h2>X views</h2><p class="hint">Afternoon of launch day. 4:17, 4:24, and 4:42 were shown as 83.3K, 84.1K, and 86.4K.</p>' +
-        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 126000, [78000, 90000, 102000, 114000, 126000]) +
+        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 130000, [78000, 91000, 104000, 117000, 130000]) +
         '</div>'
       );
       cards.push(
@@ -633,7 +803,7 @@
         lineSvg([
           { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
           { name: "Facebook", color: "#e63124", points: byId.facebook.series }
-        ], 0, 25000, [0, 6250, 12500, 18750, 25000]) +
+        ], 0, 26000, [0, 6500, 13000, 19500, 26000]) +
         '</div>'
       );
       return { html: cards.join(""), single: false };
@@ -642,7 +812,7 @@
     if (showX) {
       cards.push(
         '<div class="card"><h2><a href="' + byId.x.url + '" target="_blank" rel="noopener">X</a> views</h2><p class="hint">Afternoon of launch day. 4:17, 4:24, and 4:42 were shown as 83.3K, 84.1K, and 86.4K.</p>' +
-        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 126000, [78000, 90000, 102000, 114000, 126000]) +
+        lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 130000, [78000, 91000, 104000, 117000, 130000]) +
         '</div>'
       );
     }
@@ -652,18 +822,18 @@
         lineSvg([
           { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
           { name: "Facebook", color: "#e63124", points: byId.facebook.series }
-        ], 0, 25000, [0, 6250, 12500, 18750, 25000]) + '</div>'
+        ], 0, 26000, [0, 6500, 13000, 19500, 26000]) + '</div>'
       );
     } else if (showY) {
       cards.push(
         '<div class="card"><h2><a href="' + byId.youtube.url + '" target="_blank" rel="noopener">YouTube</a> views</h2><p class="hint">Afternoon of launch day. These points are the public view counts.</p>' +
-        lineSvg([{ name: "YouTube", color: "#cfcfcf", points: byId.youtube.series }], 0, 25000, [0, 6250, 12500, 18750, 25000]) +
+        lineSvg([{ name: "YouTube", color: "#cfcfcf", points: byId.youtube.series }], 0, 26000, [0, 6500, 13000, 19500, 26000]) +
         '</div>'
       );
     } else if (showF) {
       cards.push(
         '<div class="card"><h2><a href="' + byId.facebook.url + '" target="_blank" rel="noopener">Facebook</a> views</h2><p class="hint">Blank at 3:55pm, then 4.6K. Middle points are the public 0.1K labels. 4,633, 5,086, and 5,829 are the figures read, not 0.1K labels.</p>' +
-        lineSvg([{ name: "Facebook", color: "#e63124", points: byId.facebook.series }], 4400, 14000, [4400, 6800, 9200, 11600, 14000]) +
+        lineSvg([{ name: "Facebook", color: "#e63124", points: byId.facebook.series }], 4400, 15000, [4400, 7050, 9700, 12350, 15000]) +
         '</div>'
       );
     }
@@ -836,9 +1006,11 @@
 <script>
 (function () {
   var viewer = document.getElementById("cloud-viewer");
+  var stage = viewer && viewer.querySelector(".cloud-stage");
   var viewerImage = viewer && viewer.querySelector("img");
   var closeButton = viewer && viewer.querySelector(".cloud-viewer-close");
-  if (!viewer || !viewerImage || !closeButton) return;
+  var sources = viewer && viewer.querySelector(".cloud-sources");
+  if (!viewer || !stage || !viewerImage || !closeButton || !sources) return;
 
   var scale = 1;
   var offsetX = 0;
@@ -861,7 +1033,7 @@
 
   function zoomAt(nextScale, clientX, clientY) {
     nextScale = Math.max(1, Math.min(5, nextScale));
-    var rect = viewer.getBoundingClientRect();
+    var rect = stage.getBoundingClientRect();
     var x = clientX - rect.left - rect.width / 2;
     var y = clientY - rect.top - rect.height / 2;
     var ratio = nextScale / scale;
@@ -875,7 +1047,16 @@
     applyTransform();
   }
 
-  function openViewer(image) {
+  function showSources(key) {
+    sources.querySelectorAll(".cloud-source-list").forEach(function (list) {
+      list.hidden = list.getAttribute("data-for") !== key;
+    });
+    sources.scrollTop = 0;
+  }
+
+  function openViewer(image, key) {
+    if (!key) key = image.src.indexOf("wordcloud-chatter") !== -1 ? "chatter" : "launch";
+    showSources(key);
     viewerImage.src = image.src;
     viewerImage.alt = image.alt;
     resetZoom();
@@ -912,7 +1093,7 @@
   }
 
   document.querySelectorAll(".cloud").forEach(function (cloud) {
-    function open() { openViewer(cloud.querySelector("img")); }
+    function open() { openViewer(cloud.querySelector("img"), cloud.getAttribute("data-cloud")); }
     cloud.addEventListener("click", open);
     cloud.addEventListener("keydown", function (event) {
       if (event.key === "Enter" || event.key === " ") {
@@ -923,15 +1104,25 @@
   });
 
   closeButton.addEventListener("click", function () { closeViewer(false); });
+  function isSources(target) {
+    return !!(target && target.closest && target.closest(".cloud-sources"));
+  }
+  stage.addEventListener("click", function (event) {
+    if (event.target === stage) closeViewer(false);
+  });
   viewer.addEventListener("click", function (event) {
     if (event.target === viewer) closeViewer(false);
   });
+  sources.addEventListener("click", function (event) {
+    if (event.target.closest("a")) event.stopPropagation();
+  });
   viewer.addEventListener("wheel", function (event) {
+    if (isSources(event.target)) return;
     event.preventDefault();
     zoomAt(scale * (event.deltaY < 0 ? 1.15 : 1 / 1.15), event.clientX, event.clientY);
   }, { passive: false });
   viewer.addEventListener("pointerdown", function (event) {
-    if (event.target === closeButton) return;
+    if (event.target === closeButton || isSources(event.target)) return;
     viewer.setPointerCapture(event.pointerId);
     pointers.set(event.pointerId, event);
     if (pointers.size === 1) {
@@ -987,6 +1178,10 @@
   viewer.addEventListener("pointercancel", function (event) {
     pointers.delete(event.pointerId);
     if (!pointers.size) gesture = null;
+  });
+  window.addEventListener("resize", function () {
+    if (viewer.hidden) return;
+    if (scale === 1) resetZoom();
   });
   window.addEventListener("popstate", function () {
     if (!viewer.hidden) closeViewer(true);
