@@ -25,8 +25,8 @@
   .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 18px 24px 8px; }
   h1 { margin: 0; line-height: 0; }
   .wordmark-sweep { position: relative; display: block; width: max-content; overflow: hidden; }
-  .wordmark-sweep::after { content: ""; position: absolute; top: 0; bottom: 0; left: -5%; width: 5%; pointer-events: none; opacity: .85; background: linear-gradient(90deg, transparent, #D6001C 45%, transparent); transform: translateX(0); }
-  .wordmark-sweep.sweep-active::after { animation: wordmark-sweep 1s ease-out 1; }
+  .wordmark-sweep::after { content: ""; position: absolute; top: 0; bottom: 0; left: -5%; width: 5%; pointer-events: none; opacity: .85; background: linear-gradient(90deg, transparent, #f4f4f4 45%, transparent); transform: translateX(0); }
+  .wordmark-sweep.sweep-active::after { animation: wordmark-sweep 0.65s ease-out 1; }
   @keyframes wordmark-sweep { from { transform: translateX(0); } to { transform: translateX(2200%); } }
   @media (prefers-reduced-motion: reduce) { .wordmark-sweep.sweep-active::after { animation: none; } }
   .wordmark { height: 42px; width: auto; display: block; }
