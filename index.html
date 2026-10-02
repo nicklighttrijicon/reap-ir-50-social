@@ -34,6 +34,9 @@
   .trijicon { height: 48px; width: auto; display: block; opacity: 0.16; }
   .chip { border: 1px solid #2a2a2a; border-radius: 4px; padding: 8px 12px; font-size: 13px; color: #f4f4f4; background: #161616; white-space: nowrap; }
   .chip span { color: #b9b9b9; font-size: 11px; display: block; margin-bottom: 2px; }
+  .chip b { font-weight: 400; }
+  .tz { color: #b9b9b9; font-size: 11px; font-weight: 400; }
+  .chip .tz { display: inline; }
   #refresh-count { font-weight: 500; font-variant-numeric: tabular-nums; }
   .filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 24px 0; align-items: center; }
   .filters button { font: inherit; font-size: 13px; border: 1px solid #2a2a2a; background: #161616; color: #b9b9b9; border-radius: 16px; padding: 6px 14px; cursor: pointer; }
@@ -127,7 +130,7 @@
       </div>
       <div class="head-side">
         <h1><span class="wordmark-sweep"><img class="wordmark" src="reap-ir-50-wordmark.png" alt="REAP-IR-50 social"></span></h1>
-        <div class="chip"><span>Date range</span>Oct 1–2, 2026 · 10:01am–1:49am CT</div>
+        <div class="chip"><span>Date range</span><b id="date-range"></b></div>
         <div class="chip" id="refresh-chip"><span>Next refresh</span><b id="refresh-count">5:00</b></div>
       </div>
     </div>
@@ -339,9 +342,9 @@
         </ul>
       </aside>
     </div>
-    <p class="saying-hint">Thin sample: one dealer video, 23 comments read on that video, and one EuroOptic listing. The comments panel said 42; replies were not all opened. No other public X, Instagram, or Facebook post naming REAP-IR-50 was found. Comment times below are the relative labels shown around 7:20pm CT.</p>
+    <p class="saying-hint">Thin sample: one dealer video, 23 comments read on that video, and one EuroOptic listing. The comments panel said 42; replies were not all opened. No other public X, Instagram, or Facebook post naming REAP-IR-50 was found. Comment times below are the relative labels shown around <span id="comments-seen"></span>.</p>
     <ul class="sources">
-      <li>Shark Coast Tactical, YouTube, Oct 1, 2026, 7:00am CT, <a href="https://www.youtube.com/watch?v=PTW-moeHIkA">Trijicon REAP-IR 50 LRF | First Look at Trijicon’s New Thermal</a></li>
+      <li>Shark Coast Tactical, YouTube, <span id="shark-when"></span>, <a href="https://www.youtube.com/watch?v=PTW-moeHIkA">Trijicon REAP-IR 50 LRF | First Look at Trijicon’s New Thermal</a></li>
       <li>EuroOptic, Web, no date shown, <a href="https://www.eurooptic.com/trijicon-reap-ir-thermal-sights">REAP-IR category page listing REAP-IR-50LRF</a></li>
       <li>Comments on the Shark Coast video
         <ul>
@@ -718,6 +721,134 @@
       .replace(/"/g, "&quot;");
   }
 
+
+  // Checks were labeled in America/Chicago. Display formatters below omit timeZone
+  // so Intl uses the viewer's runtime zone, 24-hour (00-23), with a short zone name.
+  function chicagoWall(y, mo, d, h, mi) {
+    var fmt = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Chicago",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23"
+    });
+    var utc = Date.UTC(y, mo - 1, d, h, mi);
+    function parts(ms) {
+      var o = {};
+      fmt.formatToParts(new Date(ms)).forEach(function (part) {
+        if (part.type !== "literal") o[part.type] = part.value;
+      });
+      return o;
+    }
+    var got = parts(utc);
+    var shown = Date.UTC(+got.year, +got.month - 1, +got.day, +got.hour, +got.minute);
+    var want = Date.UTC(y, mo - 1, d, h, mi);
+    return new Date(utc + (want - shown));
+  }
+
+  function seriesInstant(label) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec(label);
+    if (!m) return null;
+    var h = +m[1];
+    var mi = +m[2];
+    if (h >= 3 && h <= 11) return chicagoWall(2026, 10, 1, h + 12, mi);
+    if (h === 12) return chicagoWall(2026, 10, 2, 0, mi);
+    return chicagoWall(2026, 10, 2, h, mi);
+  }
+
+  function labeledInstant(raw) {
+    var m = /^(\d{1,2}):(\d{2})\s*(am|pm)$/i.exec(String(raw || "").trim());
+    if (!m) return null;
+    var h = +m[1];
+    var mi = +m[2];
+    var ap = m[3].toLowerCase();
+    if (ap === "pm" && h < 12) h += 12;
+    if (ap === "am" && h === 12) h = 0;
+    return chicagoWall(2026, 10, h < 3 ? 2 : 1, h, mi);
+  }
+
+  var AS_OF = seriesInstant(TIMES[TIMES.length - 1]);
+  var RANGE_START = chicagoWall(2026, 10, 1, 10, 1);
+  var IG_REPOSTS = labeledInstant("6:06pm");
+  var COMMENTS_SEEN = labeledInstant("7:20pm");
+  var SHARK_POST = labeledInstant("7:00am");
+
+  var localClock = new Intl.DateTimeFormat("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  });
+  var localZone = new Intl.DateTimeFormat("en-US", {
+    hour: "2-digit",
+    timeZoneName: "shortGeneric"
+  });
+  var localDate = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+  var localDay = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  });
+  var localMonthDay = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric"
+  });
+  var localYear = new Intl.DateTimeFormat("en-US", {
+    year: "numeric"
+  });
+
+  function zoneAbbr(date) {
+    var parts = localZone.formatToParts(date);
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i].type === "timeZoneName" && parts[i].value) return parts[i].value;
+    }
+    return "";
+  }
+
+  function clock(date) {
+    var parts = localClock.formatToParts(date);
+    var h = "00";
+    var m = "00";
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i].type === "hour") h = parts[i].value;
+      if (parts[i].type === "minute") m = parts[i].value;
+    }
+    if (h === "24") h = "00";
+    return h + ":" + m;
+  }
+
+  function clockZoneText(date) {
+    return clock(date) + " " + zoneAbbr(date);
+  }
+
+  function tzSpan(date) {
+    return '<span class="tz">' + esc(zoneAbbr(date)) + "</span>";
+  }
+
+  function rangeDates(a, b) {
+    if (localDay.format(a) === localDay.format(b)) return localDate.format(a);
+    if (localYear.format(a) === localYear.format(b)) {
+      return localMonthDay.format(a) + "–" + localMonthDay.format(b) + ", " + localYear.format(b);
+    }
+    return localDate.format(a) + " – " + localDate.format(b);
+  }
+
+  function paintClocks() {
+    var range = document.getElementById("date-range");
+    if (range) {
+      range.innerHTML = esc(rangeDates(RANGE_START, AS_OF) + " · " + clock(RANGE_START) + "–" + clock(AS_OF)) + " " + tzSpan(AS_OF);
+    }
+    var seen = document.getElementById("comments-seen");
+    if (seen) seen.innerHTML = esc(clock(COMMENTS_SEEN)) + " " + tzSpan(COMMENTS_SEEN);
+    var shark = document.getElementById("shark-when");
+    if (shark) shark.innerHTML = esc(localDate.format(SHARK_POST) + ", " + clock(SHARK_POST)) + " " + tzSpan(SHARK_POST);
+  }
+
   function selected() {
     if (current === "all") return DATA.slice();
     return [byId[current]];
@@ -735,20 +866,21 @@
         score("Views", "166,944", "X, YouTube, and Facebook", "Instagram views not shown"),
         score("Likes and reactions", "3,890", "", "X 884 · YouTube 503 · Instagram 2,300 · Facebook 203"),
         score("Comments", "371", "", "X 52 · YouTube 92 · Instagram 207 · Facebook 20"),
-        score("Shares", "138", "", "X 60 reposts and 15 quotes. Instagram 39 reposts at 6:06pm. Facebook 24 shares. YouTube shares not shown.")
+        score("Shares", "138", "", "X 60 reposts and 15 quotes. Instagram 39 reposts at " + clockZoneText(IG_REPOSTS) + ". Facebook 24 shares. YouTube shares not shown.")
       ].join("");
     }
     var p = rows[0];
+    var asofNote = clockZoneText(AS_OF);
     var viewsNote = p.views == null
       ? p.name + " views not shown"
-      : (p.id === "facebook" ? "1:49am CT public figure" : "1:49am CT");
+      : (p.id === "facebook" ? asofNote + " public figure" : asofNote);
     var commentsNote = p.comments == null
       ? p.name + " comments not shown"
-      : (p.commentsWhen ? p.commentsWhen + " CT" : "1:49am CT");
+      : (p.commentsWhen ? (labeledInstant(p.commentsWhen) ? clockZoneText(labeledInstant(p.commentsWhen)) : p.commentsWhen) : asofNote);
     var sharesNote = p.shares == null
       ? p.name + " shares not shown"
-      : (p.id === "x" ? "59 reposts and 15 quotes" : (p.sharesWhen ? p.sharesWhen + " CT" : ""));
-    var likesNote = p.id === "facebook" ? "Reactions at 1:49am CT" : "1:49am CT";
+      : (p.id === "x" ? "59 reposts and 15 quotes" : (p.sharesWhen ? (labeledInstant(p.sharesWhen) ? clockZoneText(labeledInstant(p.sharesWhen)) : p.sharesWhen) : ""));
+    var likesNote = p.id === "facebook" ? "Reactions at " + asofNote : asofNote;
     return [
       score("Views", p.views == null ? "—" : fmt(p.views), "", viewsNote),
       score("Likes and reactions", p.likes == null ? "—" : fmt(p.likes), "", likesNote),
@@ -807,7 +939,10 @@
     var xIdx = xLabelIndexes();
     xIdx.forEach(function (i, k) {
       var anchor = k === 0 ? "start" : (k === xIdx.length - 1 ? "end" : "middle");
-      labels += '<text x="' + xAt(i).toFixed(1) + '" y="232" text-anchor="' + anchor + '" font-size="11" fill="#b9b9b9">' + TIMES[i] + '</text>';
+      var when = seriesInstant(TIMES[i]);
+      var axis = clock(when);
+      if (k === xIdx.length - 1) axis += " " + zoneAbbr(when);
+      labels += '<text x="' + xAt(i).toFixed(1) + '" y="232" text-anchor="' + anchor + '" font-size="11" fill="#b9b9b9">' + esc(axis) + '</text>';
     });
     var paths = "";
     series.forEach(function (s) {
@@ -819,7 +954,7 @@
         var x = xAt(i);
         var y = yAt(pt.v, min, max);
         d += (d ? " L " : "M ") + x.toFixed(1) + "," + y.toFixed(1);
-        var tipText = s.name + "\n" + pt.t + "pm CT\n" + fmt(pt.v) + (pt.approx ? "\n" + pt.approx : "");
+        var tipText = s.name + "\n" + clockZoneText(seriesInstant(pt.t)) + "\n" + fmt(pt.v) + (pt.approx ? "\n" + pt.approx : "");
         dots += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="3" fill="#161616" stroke="' + s.color + '" stroke-width="2"/>';
         dots += '<circle class="hit" data-tip="' + esc(tipText).replace(/\n/g, "&#10;") + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="10" fill="transparent" stroke="transparent"/>';
       });
@@ -837,12 +972,12 @@
 
     if (current === "all") {
       cards.push(
-        '<div class="card"><h2>X views</h2><p class="hint">Afternoon of launch day. 4:17, 4:24, and 4:42 were shown as 83.3K, 84.1K, and 86.4K.</p>' +
+        '<div class="card"><h2>X views</h2><p class="hint">' + ("Afternoon of launch day. " + clock(seriesInstant("4:17")) + ", " + clock(seriesInstant("4:24")) + ", and " + clock(seriesInstant("4:42")) + " were shown as 83.3K, 84.1K, and 86.4K.") + '</p>' +
         lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 130000, [78000, 91000, 104000, 117000, 130000]) +
         '</div>'
       );
       cards.push(
-        '<div class="card"><h2>YouTube and Facebook views</h2><p class="hint">Facebook was blank at 3:55pm, then 4.6K. Middle Facebook points are the public 0.1K labels.</p>' +
+        '<div class="card"><h2>YouTube and Facebook views</h2><p class="hint">' + ("Facebook was blank at " + clockZoneText(seriesInstant("3:55")) + ", then 4.6K.") + ' Middle Facebook points are the public 0.1K labels.</p>' +
         '<div class="legend"><span><i class="sw" style="background:#cfcfcf"></i>YouTube</span><span><i class="sw" style="background:#e63124"></i>Facebook</span></div>' +
         lineSvg([
           { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
@@ -855,14 +990,14 @@
 
     if (showX) {
       cards.push(
-        '<div class="card"><h2><a href="' + byId.x.url + '" target="_blank" rel="noopener">X</a> views</h2><p class="hint">Afternoon of launch day. 4:17, 4:24, and 4:42 were shown as 83.3K, 84.1K, and 86.4K.</p>' +
+        '<div class="card"><h2><a href="' + byId.x.url + '" target="_blank" rel="noopener">X</a> views</h2><p class="hint">' + ("Afternoon of launch day. " + clock(seriesInstant("4:17")) + ", " + clock(seriesInstant("4:24")) + ", and " + clock(seriesInstant("4:42")) + " were shown as 83.3K, 84.1K, and 86.4K.") + '</p>' +
         lineSvg([{ name: "X", color: "#D6001C", points: byId.x.series }], 78000, 130000, [78000, 91000, 104000, 117000, 130000]) +
         '</div>'
       );
     }
     if (showY && showF) {
       cards.push(
-        '<div class="card"><h2>YouTube and Facebook views</h2><p class="hint">Facebook was blank at 3:55pm, then 4.6K. Middle Facebook points are the public 0.1K labels.</p>' +
+        '<div class="card"><h2>YouTube and Facebook views</h2><p class="hint">' + ("Facebook was blank at " + clockZoneText(seriesInstant("3:55")) + ", then 4.6K.") + ' Middle Facebook points are the public 0.1K labels.</p>' +
         lineSvg([
           { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
           { name: "Facebook", color: "#e63124", points: byId.facebook.series }
@@ -876,7 +1011,7 @@
       );
     } else if (showF) {
       cards.push(
-        '<div class="card"><h2><a href="' + byId.facebook.url + '" target="_blank" rel="noopener">Facebook</a> views</h2><p class="hint">Blank at 3:55pm, then 4.6K. Middle points are the public 0.1K labels. 4,633, 5,086, and 5,829 are the figures read, not 0.1K labels.</p>' +
+        '<div class="card"><h2><a href="' + byId.facebook.url + '" target="_blank" rel="noopener">Facebook</a> views</h2><p class="hint">' + ("Blank at " + clockZoneText(seriesInstant("3:55")) + ", then 4.6K.") + ' Middle points are the public 0.1K labels. 4,633, 5,086, and 5,829 are the figures read, not 0.1K labels.</p>' +
         lineSvg([{ name: "Facebook", color: "#e63124", points: byId.facebook.series }], 4400, 15000, [4400, 7050, 9700, 12350, 15000]) +
         '</div>'
       );
@@ -1035,6 +1170,7 @@
 
   var start = new URLSearchParams(location.search).get("p");
   if (start && byId[start]) current = start;
+  paintClocks();
   render();
   var xLabelBucket = xLabelCount();
   window.addEventListener("resize", function () {
