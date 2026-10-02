@@ -24,6 +24,11 @@
   .accent { height: 4px; background: #D6001C; }
   .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 18px 24px 8px; }
   h1 { margin: 0; line-height: 0; }
+  .wordmark-sweep { position: relative; display: block; width: max-content; overflow: hidden; }
+  .wordmark-sweep::after { content: ""; position: absolute; top: 0; bottom: 0; left: -5%; width: 5%; pointer-events: none; opacity: .85; background: linear-gradient(90deg, transparent, #D6001C 45%, transparent); transform: translateX(0); }
+  .wordmark-sweep.sweep-active::after { animation: wordmark-sweep 1s ease-out 1; }
+  @keyframes wordmark-sweep { from { transform: translateX(0); } to { transform: translateX(2200%); } }
+  @media (prefers-reduced-motion: reduce) { .wordmark-sweep.sweep-active::after { animation: none; } }
   .wordmark { height: 42px; width: auto; display: block; }
   .head-side { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex: 0 0 auto; }
   .trijicon { height: 32px; width: auto; display: block; }
@@ -94,7 +99,7 @@
     <div class="accent"></div>
     <div class="head">
       <div>
-        <h1><img class="wordmark" src="reap-ir-50-wordmark.png" alt="REAP-IR-50 social"></h1>
+        <h1><span class="wordmark-sweep"><img class="wordmark" src="reap-ir-50-wordmark.png" alt="REAP-IR-50 social"></span></h1>
         <p class="sub">Launch posts only. Figures as of 12:54am CT Oct 2, 2026. Instagram views not shown. Instagram reposts 39 at 6:06pm.</p>
       </div>
       <div class="head-side">
@@ -998,6 +1003,19 @@
     var s = left % 60;
     el.textContent = m + ":" + (s < 10 ? "0" : "") + s;
   }, 1000);
+})();
+</script>
+<script>
+(function () {
+  var logo = document.querySelector(".wordmark-sweep");
+  if (!logo || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function runSweep() {
+    logo.classList.remove("sweep-active");
+    void logo.offsetWidth;
+    logo.classList.add("sweep-active");
+  }
+  runSweep();
+  setInterval(runSweep, 60000);
 })();
 </script>
 </body>
