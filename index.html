@@ -1165,6 +1165,18 @@
       sharesCell: "—",
       other: "Oct 2 REAP-IR-50 carousel (3 images)",
       platform: "instagram"
+    },
+    {
+      id: "x-carousel",
+      name: "X",
+      url: "https://x.com/Trijicon/status/2106098710484586600",
+      views: 532,
+      likes: 14,
+      comments: 0,
+      shares: 0,
+      sharesCell: "0 reposts, 0 quotes",
+      other: "Oct 2 REAP-IR-50 carousel (3 images); 0 bookmarks",
+      platform: "x"
     }
   ];
 
@@ -1337,8 +1349,8 @@
   function metricCards(rows) {
     if (rows.length === 4) {
       return [
-        score("Views", "248,297", "X, YouTube, Instagram, and Facebook", "Instagram 50,800 is a manual Insights read as of about 10:43 CT Oct 2, not a live public count"),
-        score("Likes and reactions", "4,375", "", "X 1,069 · YouTube 607 · Instagram 2,458 · Facebook 241"),
+        score("Views", "248,297", "X, YouTube, Instagram, and Facebook", "Instagram 50,800 is a manual Insights read as of about 10:43 CT Oct 2, not a live public count. Separate X carousel row: 532 views, 14 likes, 0 comments, 0 shares."),
+        score("Likes and reactions", "4,375", "", "X 1,069 · YouTube 607 · Instagram 2,458 · Facebook 241 · X carousel 14 (separate row)"),
         score("Comments", "402", "", "X 55 · YouTube 108 · Instagram 214 · Facebook 25"),
         score("Shares", "176", "", "X 81 reposts and 23 quotes. Instagram 42 reposts at " + clockZoneText(IG_REPOSTS) + ". Facebook 30 shares. YouTube shares not shown.")
       ].join("");
@@ -1349,7 +1361,7 @@
       ? p.name + " views not shown"
       : (p.id === "instagram"
         ? "Manual Insights read as of about 10:43 CT Oct 2, not a live public count"
-        : (p.id === "facebook" ? asofNote + " public figure" : asofNote));
+        : (p.id === "facebook" ? asofNote + " public figure" : (p.id === "x" ? asofNote + ". Carousel row: 532 views, 14 likes, 0 comments, 0 shares." : asofNote)));
     var commentsNote = p.comments == null
       ? p.name + " comments not shown"
       : (p.commentsWhen ? (labeledInstant(p.commentsWhen) ? clockZoneText(labeledInstant(p.commentsWhen)) : p.commentsWhen) : asofNote);
