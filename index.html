@@ -387,7 +387,7 @@
 <div class="tip" id="tip" role="tooltip"></div>
 <script>
 (function () {
-  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29", "8:36", "8:39", "8:46", "8:53", "9:00", "9:05", "9:13", "9:22", "9:26", "9:32", "9:36", "9:42", "9:50", "9:57", "10:03", "10:13", "10:18", "10:22", "10:33", "10:42", "10:50", "10:56", "11:00", "11:04", "11:11", "11:16", "11:26", "11:29", "11:35", "11:42", "11:48", "11:56", "11:58", "12:05", "12:16", "12:23", "12:28", "12:32", "12:38", "12:40", "12:54", "12:56", "1:02", "1:07", "1:12", "1:16", "1:22", "1:28", "1:33", "1:37", "1:40", "1:46", "1:49", "1:59", "2:05"];
+  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29", "8:36", "8:39", "8:46", "8:53", "9:00", "9:05", "9:13", "9:22", "9:26", "9:32", "9:36", "9:42", "9:50", "9:57", "10:03", "10:13", "10:18", "10:22", "10:33", "10:42", "10:50", "10:56", "11:00", "11:04", "11:11", "11:16", "11:26", "11:29", "11:35", "11:42", "11:48", "11:56", "11:58", "12:05", "12:16", "12:23", "12:28", "12:32", "12:38", "12:40", "12:54", "12:56", "1:02", "1:07", "1:12", "1:16", "1:22", "1:28", "1:33", "1:37", "1:40", "1:46", "1:49", "1:59", "2:05", "2:13"];
 
   var DATA = [
     {
@@ -395,8 +395,8 @@
       name: "X",
       url: "https://x.com/Trijicon/status/2105674422946308484",
       color: "#D6001C",
-      views: 128043,
-      likes: 888,
+      views: 128455,
+      likes: 890,
       comments: 52,
       shares: 77,
       sharesCell: "62 reposts, 15 quotes",
@@ -489,7 +489,8 @@
         { t: "1:46", v: 127195 },
         { t: "1:49", v: 127400 },
         { t: "1:59", v: 127813 },
-        { t: "2:05", v: 128043 }
+        { t: "2:05", v: 128043 },
+        { t: "2:13", v: 128455 }
       ]
     },
     {
@@ -497,9 +498,9 @@
       name: "YouTube",
       url: "https://www.youtube.com/watch?v=GL4YznS9ETg",
       color: "#cfcfcf",
-      views: 25930,
+      views: 26001,
       likes: 506,
-      comments: 95,
+      comments: 96,
       shares: null,
       sharesCell: "—",
       other: "18.6K subscribers",
@@ -591,7 +592,8 @@
         { t: "1:46", v: 25683 },
         { t: "1:49", v: 25789 },
         { t: "1:59", v: 25891 },
-        { t: "2:05", v: 25930 }
+        { t: "2:05", v: 25930 },
+        { t: "2:13", v: 26001 }
       ]
     },
     {
@@ -615,7 +617,7 @@
       name: "Facebook",
       url: "https://www.facebook.com/reel/1570702804807840/",
       color: "#e63124",
-      views: 14120,
+      views: 14144,
       likes: 206,
       comments: 20,
       shares: 24,
@@ -709,7 +711,8 @@
         { t: "1:46", v: 14066 },
         { t: "1:49", v: 14086 },
         { t: "1:59", v: 14105 },
-        { t: "2:05", v: 14120 }
+        { t: "2:05", v: 14120 },
+        { t: "2:13", v: 14144 }
       ]
     }
   ];
@@ -874,9 +877,9 @@
   function metricCards(rows) {
     if (rows.length === 4) {
       return [
-        score("Views", "168,093", "X, YouTube, and Facebook", "Instagram views not shown"),
-        score("Likes and reactions", "3,904", "", "X 888 · YouTube 506 · Instagram 2,304 · Facebook 206"),
-        score("Comments", "374", "", "X 52 · YouTube 95 · Instagram 207 · Facebook 20"),
+        score("Views", "168,600", "X, YouTube, and Facebook", "Instagram views not shown"),
+        score("Likes and reactions", "3,906", "", "X 890 · YouTube 506 · Instagram 2,304 · Facebook 206"),
+        score("Comments", "375", "", "X 52 · YouTube 96 · Instagram 207 · Facebook 20"),
         score("Shares", "140", "", "X 62 reposts and 15 quotes. Instagram 39 reposts at " + clockZoneText(IG_REPOSTS) + ". Facebook 24 shares. YouTube shares not shown.")
       ].join("");
     }
@@ -1030,7 +1033,7 @@
         lineSvg([
           { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
           { name: "Facebook", color: "#e63124", points: byId.facebook.series }
-        ], 0, 26000, [0, 6500, 13000, 19500, 26000]) +
+        ], 0, 27000, [0, 6750, 13500, 20250, 27000]) +
         '</div>'
       );
       return { html: cards.join(""), single: false };
@@ -1049,12 +1052,12 @@
         lineSvg([
           { name: "YouTube", color: "#cfcfcf", points: byId.youtube.series },
           { name: "Facebook", color: "#e63124", points: byId.facebook.series }
-        ], 0, 26000, [0, 6500, 13000, 19500, 26000]) + '</div>'
+        ], 0, 27000, [0, 6750, 13500, 20250, 27000]) + '</div>'
       );
     } else if (showY) {
       cards.push(
         '<div class="card"><h2><a href="' + byId.youtube.url + '" target="_blank" rel="noopener">YouTube</a> views</h2><p class="hint">Afternoon of launch day. These points are the public view counts.</p>' +
-        lineSvg([{ name: "YouTube", color: "#cfcfcf", points: byId.youtube.series }], 0, 26000, [0, 6500, 13000, 19500, 26000]) +
+        lineSvg([{ name: "YouTube", color: "#cfcfcf", points: byId.youtube.series }], 0, 27000, [0, 6750, 13500, 20250, 27000]) +
         '</div>'
       );
     } else if (showF) {
