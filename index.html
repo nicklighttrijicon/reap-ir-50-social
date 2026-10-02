@@ -4,9 +4,12 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>REAP-IR-50 social</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: #0d0d0d; color: #f4f4f4; font-family: "Noto Sans", Roboto, Arial, sans-serif; }
+  html, body { margin: 0; background: #0d0d0d; color: #f4f4f4; font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; }
   a { color: #D6001C; text-decoration: none; }
   a:hover { text-decoration: underline; }
   .page { max-width: 1180px; margin: 0 auto; padding: 20px 16px 28px; }
@@ -29,7 +32,7 @@
   .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 12px 24px 4px; }
   .score { border: 1px solid #2a2a2a; border-radius: 4px; padding: 12px 16px 14px; background: #161616; min-height: 108px; }
   .score .k { font-size: 12px; color: #b9b9b9; }
-  .score .v { font-size: 28px; font-weight: 400; margin-top: 2px; line-height: 1.2; color: #f4f4f4; }
+  .score .v { font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; font-size: 28px; font-weight: 400; margin-top: 2px; line-height: 1.2; color: #f4f4f4; }
   .score .d { font-size: 12px; margin-top: 6px; color: #b9b9b9; }
   .score .n { font-size: 12px; margin-top: 6px; color: #b9b9b9; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 8px 24px 0; }
@@ -41,7 +44,7 @@
   .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
   .chart-wrap { position: relative; }
   svg.chart { width: 100%; height: auto; display: block; }
-  svg.chart text { font-family: "Noto Sans", Roboto, Arial, sans-serif; }
+  svg.chart text { font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif; }
   table { width: calc(100% - 48px); margin: 0 24px; border-collapse: collapse; font-size: 13px; }
   th { text-align: right; font-weight: 500; font-size: 12px; color: #b9b9b9; background: #161616; padding: 8px 10px; border-bottom: 1px solid #2a2a2a; }
   th:first-child, td:first-child { text-align: left; }
