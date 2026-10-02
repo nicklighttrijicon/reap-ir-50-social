@@ -79,11 +79,11 @@
     <div class="head">
       <div>
         <h1><img class="wordmark" src="reap-ir-50-wordmark.png" alt="REAP-IR-50 social"></h1>
-        <p class="sub">Launch posts only. Figures as of 8:53pm CT Oct 1, 2026. Instagram views not shown. Instagram reposts 39 at 6:06pm.</p>
+        <p class="sub">Launch posts only. Figures as of 9:00pm CT Oct 1, 2026. Instagram views not shown. Instagram reposts 39 at 6:06pm.</p>
       </div>
       <div class="head-side">
         <img class="trijicon" src="trijicon-logo.svg" alt="Trijicon">
-        <div class="chip"><span>Date range</span>Oct 1, 2026 · 10:01am–8:53pm CT</div>
+        <div class="chip"><span>Date range</span>Oct 1, 2026 · 10:01am–9:00pm CT</div>
         <div class="chip" id="refresh-chip"><span>Next refresh</span><b id="refresh-count">5:00</b></div>
       </div>
     </div>
@@ -155,14 +155,14 @@
       </li>
     </ul>
     <footer>
-      A dash is not zero. The live page updates when a public number changes. X followers are 177,640. YouTube has 18.5K subscribers. Instagram has 731K followers. Facebook followers are about 308K. Some earlier X and Facebook chart points used rounded public labels.
+      A dash is not zero. The live page updates when a public number changes. X followers are 177,642. YouTube has 18.5K subscribers. Instagram has 731K followers. Facebook followers are about 308K. Some earlier X and Facebook chart points used rounded public labels.
     </footer>
   </div>
 </div>
 <div class="tip" id="tip" role="tooltip"></div>
 <script>
 (function () {
-  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29", "8:36", "8:39", "8:46", "8:53"];
+  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29", "8:36", "8:39", "8:46", "8:53", "9:00"];
 
   var DATA = [
     {
@@ -170,13 +170,13 @@
       name: "X",
       url: "https://x.com/Trijicon/status/2105674422946308484",
       color: "#D6001C",
-      views: 110991,
-      likes: 780,
+      views: 111652,
+      likes: 783,
       comments: 48,
-      shares: 59,
-      sharesCell: "47 reposts, 12 quotes",
-      other: "174 bookmarks",
-      audience: 177640,
+      shares: 60,
+      sharesCell: "47 reposts, 13 quotes",
+      other: "175 bookmarks",
+      audience: 177642,
       audienceLabel: "177.6K",
       series: [
         { t: "3:55", v: 81053 },
@@ -213,7 +213,8 @@
         { t: "8:36", v: 109644 },
         { t: "8:39", v: 109955 },
         { t: "8:46", v: 110491 },
-        { t: "8:53", v: 110991 }
+        { t: "8:53", v: 110991 },
+        { t: "9:00", v: 111652 }
       ]
     },
     {
@@ -221,8 +222,8 @@
       name: "YouTube",
       url: "https://www.youtube.com/watch?v=GL4YznS9ETg",
       color: "#cfcfcf",
-      views: 20327,
-      likes: 433,
+      views: 20398,
+      likes: 436,
       comments: 83,
       shares: null,
       sharesCell: "—",
@@ -264,7 +265,8 @@
         { t: "8:36", v: 18791 },
         { t: "8:39", v: 19108 },
         { t: "8:46", v: 19562 },
-        { t: "8:53", v: 20327 }
+        { t: "8:53", v: 20327 },
+        { t: "9:00", v: 20398 }
       ]
     },
     {
@@ -273,8 +275,8 @@
       url: "https://www.instagram.com/trijicon/reel/Dd9Lviggari/",
       color: "#b9b9b9",
       views: null,
-      likes: 2140,
-      comments: 198,
+      likes: 2148,
+      comments: 199,
       shares: 39,
       sharesWhen: "6:06pm",
       sharesCell: "39 reposts",
@@ -288,8 +290,8 @@
       name: "Facebook",
       url: "https://www.facebook.com/reel/1570702804807840/",
       color: "#e63124",
-      views: 10369,
-      likes: 165,
+      views: 10584,
+      likes: 167,
       comments: 16,
       shares: 21,
       sharesCell: "21",
@@ -331,7 +333,8 @@
         { t: "8:36", v: 9970 },
         { t: "8:39", v: 10030 },
         { t: "8:46", v: 10249 },
-        { t: "8:53", v: 10369 }
+        { t: "8:53", v: 10369 },
+        { t: "9:00", v: 10584 }
       ]
     }
   ];
@@ -368,23 +371,23 @@
   function metricCards(rows) {
     if (rows.length === 4) {
       return [
-        score("Views", "141,687", "X, YouTube, and Facebook", "Instagram views not shown"),
-        score("Likes and reactions", "3,518", "", "X 780 · YouTube 433 · Instagram 2,140 · Facebook 165"),
-        score("Comments", "345", "", "X 48 · YouTube 83 · Instagram 198 · Facebook 16"),
-        score("Shares", "119", "", "X 47 reposts and 12 quotes. Instagram 39 reposts at 6:06pm. Facebook 21 shares. YouTube shares not shown.")
+        score("Views", "142,634", "X, YouTube, and Facebook", "Instagram views not shown"),
+        score("Likes and reactions", "3,534", "", "X 783 · YouTube 436 · Instagram 2,148 · Facebook 167"),
+        score("Comments", "346", "", "X 48 · YouTube 83 · Instagram 199 · Facebook 16"),
+        score("Shares", "120", "", "X 47 reposts and 13 quotes. Instagram 39 reposts at 6:06pm. Facebook 21 shares. YouTube shares not shown.")
       ].join("");
     }
     var p = rows[0];
     var viewsNote = p.views == null
       ? p.name + " views not shown"
-      : (p.id === "facebook" ? "8:53pm CT public figure" : "8:53pm CT");
+      : (p.id === "facebook" ? "9:00pm CT public figure" : "9:00pm CT");
     var commentsNote = p.comments == null
       ? p.name + " comments not shown"
-      : (p.commentsWhen ? p.commentsWhen + " CT" : "8:53pm CT");
+      : (p.commentsWhen ? p.commentsWhen + " CT" : "9:00pm CT");
     var sharesNote = p.shares == null
       ? p.name + " shares not shown"
-      : (p.id === "x" ? "47 reposts and 12 quotes" : (p.sharesWhen ? p.sharesWhen + " CT" : ""));
-    var likesNote = p.id === "facebook" ? "Reactions at 8:53pm CT" : "8:53pm CT";
+      : (p.id === "x" ? "47 reposts and 13 quotes" : (p.sharesWhen ? p.sharesWhen + " CT" : ""));
+    var likesNote = p.id === "facebook" ? "Reactions at 9:00pm CT" : "9:00pm CT";
     return [
       score("Views", p.views == null ? "—" : fmt(p.views), "", viewsNote),
       score("Likes and reactions", p.likes == null ? "—" : fmt(p.likes), "", likesNote),
