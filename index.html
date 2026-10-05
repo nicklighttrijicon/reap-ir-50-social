@@ -662,7 +662,7 @@
 <div class="tip" id="tip" role="tooltip"></div>
 <script>
 (function () {
-  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29", "8:36", "8:39", "8:46", "8:53", "9:00", "9:05", "9:13", "9:22", "9:26", "9:32", "9:36", "9:42", "9:50", "9:57", "10:03", "10:13", "10:18", "10:22", "10:33", "10:42", "10:50", "10:56", "11:00", "11:04", "11:11", "11:16", "11:26", "11:29", "11:35", "11:42", "11:48", "11:56", "11:58", "12:05", "12:16", "12:23", "12:28", "12:32", "12:38", "12:40", "12:54", "12:56", "1:02", "1:07", "1:12", "1:16", "1:22", "1:28", "1:33", "1:37", "1:40", "1:46", "1:49", "1:59", "2:05", "2:13", "2:21", "2:24", "2:30", "2:36", "2:42", "2:52", "2:55", "2:58", "3:07", "3:13", "3:16", "3:17", "3:27", "3:30", "3:34", "3:40", "3:45", "3:50", "3:59", "4:06", "4:12", "4:16", "4:21", "4:26", "4:31", "4:43", "4:46", "4:53", "4:58", "5:05", "5:11", "5:17", "5:24", "5:31", "5:38", "5:45", "5:53", "5:56", "6:06", "6:10", "6:16", "6:20", "6:26", "6:32", "6:39", "6:48", "6:53", "7:05", "7:10", "7:15", "7:27", "7:33", "7:40", "7:45", "7:50", "7:52", "7:59", "8:18", "8:26", "8:35", "8:45", "8:55", "9:03", "9:17", "9:27", "9:35", "9:43", "9:48", "9:54", "10:04", "10:14", "10:26", "10:36", "10:45", "10:49", "11:01", "11:10", "11:21", "11:28", "11:38", "11:45", "11:47", "11:58", "12:02", "12:07", "12:12", "12:18", "12:22", "12:26", "12:30", "12:37", "12:41", "12:47", "12:53", "12:58", "1:08", "1:20", "1:26", "1:32", "1:38", "1:50", "1:58", "2:08", "2:16", "2:30", "2:37", "2:44", "2:55", "3:09", "3:17", "3:31", "3:37", "3:47", "4:43", "5:46", "6:43", "7:54", "8:42", "9:52", "10:37", "10:48", "10:49", "11:46", "8:52", "8:48", "0:47", "1:41", "2:46", "3:41", "4:47", "5:40", "6:44", "7:44", "9:25", "9:51", "10:51", "11:52", "12:50", "13:40"]
+  var TIMES = ["3:55", "4:17", "4:24", "4:34", "4:36", "4:42", "4:50", "4:54", "6:01", "6:11", "6:14", "6:22", "6:29", "6:37", "6:42", "6:50", "6:54", "7:02", "7:06", "7:11", "7:21", "7:25", "7:32", "7:42", "7:49", "7:58", "8:03", "8:07", "8:10", "8:19", "8:29", "8:36", "8:39", "8:46", "8:53", "9:00", "9:05", "9:13", "9:22", "9:26", "9:32", "9:36", "9:42", "9:50", "9:57", "10:03", "10:13", "10:18", "10:22", "10:33", "10:42", "10:50", "10:56", "11:00", "11:04", "11:11", "11:16", "11:26", "11:29", "11:35", "11:42", "11:48", "11:56", "11:58", "12:05", "12:16", "12:23", "12:28", "12:32", "12:38", "12:40", "12:54", "12:56", "1:02", "1:07", "1:12", "1:16", "1:22", "1:28", "1:33", "1:37", "1:40", "1:46", "1:49", "1:59", "2:05", "2:13", "2:21", "2:24", "2:30", "2:36", "2:42", "2:52", "2:55", "2:58", "3:07", "3:13", "3:16", "3:17", "3:27", "3:30", "3:34", "3:40", "3:45", "3:50", "3:59", "4:06", "4:12", "4:16", "4:21", "4:26", "4:31", "4:43", "4:46", "4:53", "4:58", "5:05", "5:11", "5:17", "5:24", "5:31", "5:38", "5:45", "5:53", "5:56", "6:06", "6:10", "6:16", "6:20", "6:26", "6:32", "6:39", "6:48", "6:53", "7:05", "7:10", "7:15", "7:27", "7:33", "7:40", "7:45", "7:50", "7:52", "7:59", "8:18", "8:26", "8:35", "8:45", "8:55", "9:03", "9:17", "9:27", "9:35", "9:43", "9:48", "9:54", "10:04", "10:14", "10:26", "10:36", "10:45", "10:49", "11:01", "11:10", "11:21", "11:28", "11:38", "11:45", "11:47", "11:58", "12:02", "12:07", "12:12", "12:18", "12:22", "12:26", "12:30", "12:37", "12:41", "12:47", "12:53", "12:58", "1:08", "1:20", "1:26", "1:32", "1:38", "1:50", "1:58", "2:08", "2:16", "2:30", "2:37", "2:44", "2:55", "3:09", "3:17", "3:31", "3:37", "3:47", "4:43", "5:46", "6:43", "7:54", "8:42", "9:52", "10:37", "10:48", "10:49", "11:46", "8:52", "8:48", "0:47", "1:41", "2:46", "3:41", "4:47", "5:40", "6:44", "7:44", "9:25", "9:51", "10:51", "11:52", "12:50", "13:40", "14:41"]
 
   var DATA = [
     {
@@ -670,7 +670,7 @@
       name: "X",
       url: "https://x.com/Trijicon/status/2105674422946308484",
       color: "#D6001C",
-      views: 171199,
+      views: 171206,
       likes: 1467,
       comments: 66,
       shares: 154,
@@ -866,7 +866,8 @@
         { t: "10:51", v: 171137, approx: "fxtwitter launch 152,498 + carousel 18,639; likes 1092+375; comments 57+9; reposts 83+42, quotes 24+5; bookmarks 246+60 (Oct 5)" },
         { t: "11:52", v: 171167, approx: "fxtwitter launch 152,518 + carousel 18,649; likes 1092+375; comments 57+9; reposts 83+42, quotes 24+5; bookmarks 246+60 (Oct 5)" },
         { t: "12:50", v: 171190, approx: "fxtwitter launch 152,531 + carousel 18,659; likes 1092+375; comments 57+9; reposts 83+42, quotes 24+5; bookmarks 246+60 (Oct 5)" },
-        { t: "13:40", v: 171199, approx: "fxtwitter launch 152,534 + carousel 18,665; likes 1092+375; comments 57+9; reposts 83+42, quotes 24+5; bookmarks 246+60 (Oct 5)" }
+        { t: "13:40", v: 171199, approx: "fxtwitter launch 152,534 + carousel 18,665; likes 1092+375; comments 57+9; reposts 83+42, quotes 24+5; bookmarks 246+60 (Oct 5)" },
+        { t: "14:41", v: 171206, approx: "fxtwitter launch 152,539 + carousel 18,667; likes 1092+375; comments 57+9; reposts 83+42, quotes 24+5; bookmarks 246+60 (Oct 5)" }
       ]
     },
     {
@@ -874,8 +875,8 @@
       name: "YouTube",
       url: "https://www.youtube.com/watch?v=GL4YznS9ETg",
       color: "#cfcfcf",
-      views: 108980,
-      likes: 1807,
+      views: 110314,
+      likes: 1821,
       comments: 209,
       shares: null,
       sharesCell: "—",
@@ -1070,7 +1071,8 @@
         { t: "10:51", v: 105558, approx: "Launch 104,483 views / 1,713 likes / 203 comments + Short GGI5OhwXchE 1,075 / 60 / 2 (youtubei, Oct 5); folded into YouTube bucket" },
         { t: "11:52", v: 106629, approx: "Launch 105,542 views / 1,728 likes / 203 comments + Short GGI5OhwXchE 1,087 / 63 / 2 (YouTube watch page, Oct 5); folded into YouTube bucket" },
         { t: "12:50", v: 107883, approx: "Launch 106,796 views / 1,736 likes / 203 comments + Short GGI5OhwXchE 1,087 (last exact; page shows 1K) / 63 / 2 (YouTube watch page, Oct 5); folded into YouTube bucket" },
-        { t: "13:40", v: 108980, approx: "Launch 107,853 views / 1,743 likes / 207 comments + Short GGI5OhwXchE 1,127 / 64 / 2 (YouTube watch page, Oct 5); folded into YouTube bucket" }
+        { t: "13:40", v: 108980, approx: "Launch 107,853 views / 1,743 likes / 207 comments + Short GGI5OhwXchE 1,127 / 64 / 2 (YouTube watch page, Oct 5); folded into YouTube bucket" },
+        { t: "14:41", v: 110314, approx: "Launch 109,187 views / 1,756 likes / 207 comments + Short GGI5OhwXchE 1,127 / 65 / 2 (YouTube watch page, Oct 5); folded into YouTube bucket" }
       ]
     },
     {
@@ -1131,7 +1133,8 @@
         { t: "10:51", v: 130060, approx: "Manual Insights: reel 56,823 + carousel 73,237 = 130,060; both reported Oct 4, 2026; reel likes 2,737 / comments 230 + carousel 1,511 / 82 (browser read Oct 5); reposts reel 47 + carousel 21" },
         { t: "11:52", v: 130060, approx: "Manual Insights: reel 56,823 + carousel 73,237 = 130,060; both reported Oct 4, 2026; reel likes 2,742 / comments 230 + carousel 1,515 / 82 (browser read Oct 5); reposts reel 47 + carousel 21" },
         { t: "12:50", v: 130060, approx: "Manual Insights: reel 56,823 + carousel 73,237 = 130,060; both reported Oct 4, 2026; reel likes 2,742 / comments 230 + carousel 1,517 / 82 (browser read Oct 5); reposts reel 47 + carousel 21" },
-        { t: "13:40", v: 130060, approx: "Manual Insights: reel 56,823 + carousel 73,237 = 130,060; both reported Oct 4, 2026; reel likes 2,744 / comments 230 + carousel 1,522 / 82 (browser read Oct 5); reposts reel 47 + carousel 21" }
+        { t: "13:40", v: 130060, approx: "Manual Insights: reel 56,823 + carousel 73,237 = 130,060; both reported Oct 4, 2026; reel likes 2,744 / comments 230 + carousel 1,522 / 82 (browser read Oct 5); reposts reel 47 + carousel 21" },
+        { t: "14:41", v: 130060, approx: "Manual Insights: reel 56,823 + carousel 73,237 = 130,060; both reported Oct 4, 2026; likes/comments kept at last browser read (reel 2,744 / 230 + carousel 1,522 / 82) because Instagram showed a device-verification wall this check; reposts reel 47 + carousel 21" }
       ]
     },
     {
@@ -1140,8 +1143,8 @@
       url: "https://www.facebook.com/reel/1570702804807840/",
       color: "#e63124",
       views: 25000,
-      likes: 1231,
-      comments: 112,
+      likes: 1238,
+      comments: 113,
       shares: 97,
       sharesCell: "96",
       other: "about 308K followers",
@@ -1336,7 +1339,8 @@
         { t: "10:51", v: 25000, approx: "Reel views kept at 25K (no view count shown Oct 5) / 341 reactions / 30 comments / 37 shares + Oct 2 carousel 874 reactions / 79 comments / 59 shares (browser read Oct 5); carousel views unknown" },
         { t: "11:52", v: 25000, approx: "Reel views kept at 25K (no view count shown Oct 5) / 341 reactions / 30 comments / 37 shares + Oct 2 carousel 883 reactions / 80 comments / 60 shares (browser read Oct 5); carousel views unknown" },
         { t: "12:50", v: 25000, approx: "Reel views kept at 25K (no view count shown Oct 5) / 341 reactions / 30 comments / 37 shares + Oct 2 carousel 888 reactions / 82 comments / 60 shares (browser read Oct 5); carousel views unknown" },
-        { t: "13:40", v: 25000, approx: "Reel views kept at 25K (no labelled view count Oct 5) / 343 reactions / 30 comments / 37 shares + Oct 2 carousel 888 reactions / 82 comments / 60 shares (last browser read Oct 5; not found this check); carousel views unknown" }
+        { t: "13:40", v: 25000, approx: "Reel views kept at 25K (no labelled view count Oct 5) / 343 reactions / 30 comments / 37 shares + Oct 2 carousel 888 reactions / 82 comments / 60 shares (last browser read Oct 5; not found this check); carousel views unknown" },
+        { t: "14:41", v: 25000, approx: "Reel views kept at 25K (no labelled view count Oct 5) / 343 reactions / 30 comments / 37 shares + Oct 2 carousel 895 reactions / 83 comments / 60 shares (browser read Oct 5); carousel views unknown" }
       ]
     }
   ];
@@ -1387,7 +1391,7 @@
     return new Date(utc + (want - shown));
   }
 
-  var LATER_LABELS = { "8:52": [3, 8, 52], "8:48": [4, 8, 48], "0:47": [5, 0, 47], "1:41": [5, 1, 41], "2:46": [5, 2, 46], "3:41": [5, 3, 41] , "4:47": [5, 4, 47], "5:40": [5, 5, 40], "6:44": [5, 6, 44], "7:44": [5, 7, 44], "9:25": [5, 9, 25], "9:51": [5, 9, 51], "10:51": [5, 10, 51], "11:52": [5, 11, 52], "12:50": [5, 12, 50], "13:40": [5, 13, 40]};
+  var LATER_LABELS = { "8:52": [3, 8, 52], "8:48": [4, 8, 48], "0:47": [5, 0, 47], "1:41": [5, 1, 41], "2:46": [5, 2, 46], "3:41": [5, 3, 41] , "4:47": [5, 4, 47], "5:40": [5, 5, 40], "6:44": [5, 6, 44], "7:44": [5, 7, 44], "9:25": [5, 9, 25], "9:51": [5, 9, 51], "10:51": [5, 10, 51], "11:52": [5, 11, 52], "12:50": [5, 12, 50], "13:40": [5, 13, 40], "14:41": [5, 14, 41]};
   function seriesInstant(label) {
     if (LATER_LABELS[label]) return chicagoWall(2026, 10, LATER_LABELS[label][0], LATER_LABELS[label][1], LATER_LABELS[label][2]);
     var m = /^(\d{1,2}):(\d{2})$/.exec(label);
